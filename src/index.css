@@ -7,6 +7,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -16,12 +17,39 @@ code {
     monospace;
 }
 
+#root {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+}
+
 @layer components {
-  .navContainer{
-    @apply flex px-24 py-5 bg-gray-700 text-white font-semibold;
+  .navContainer {
+    @apply flex px-24 bg-gray-100 text-blue-900 font-semibold;
   }
 
-  .navbar-item{
-    @apply inline-block px-4 
+  .navbar-item {
+    @apply inline-block px-4 py-3 border-b-4 border-transparent hover:border-blue-900 ease-in duration-200;
+  }
+
+  .card-container{
+    @apply grid grid-cols-4 gap-x-4 gap-y-8;
+  }
+
+  .card {
+    @apply flex flex-col rounded-lg w-72 h-52 px-8 py-6;
+  }
+
+  .card-header{
+    @apply text-xl font-semibold pb-2 mb-2 border-b-2 border-[#ffffff80]
+  }
+
+  .card-text{
+    @apply w-full text-justify flex-grow
+  }
+
+  .button{
+    @apply text-center px-4 py-2 rounded bg-[#ffffffc0] text-gray-900
   }
 }
