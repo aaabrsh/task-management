@@ -1,13 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import reportWebVitals from "./reportWebVitals";
+import Layout from "./layout";
+import Home from "./layout/pages/Home";
+import NewBoard from "./layout/pages/NewBoard";
+import PageNotFound from "./layout/pages/PageNotFound";
+import Boards from "./layout/pages/Boards";
+import About from "./layout/pages/About";
+import Profile from "./layout/pages/Profile";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="boards" element={<Boards />} />
+          <Route path="boards/new" element={<NewBoard />} />
+          <Route path="boards/:id" element={<NewBoard />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="about" element={<About />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
