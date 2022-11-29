@@ -15,3 +15,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@layer components {
+  .navContainer{
+    @apply flex px-24 py-5 bg-gray-700 text-white font-semibold;
+  }
+
+  .navbar-item{
+    @apply inline-block px-4 
+  }
+}

@@ -2,21 +2,23 @@ import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
   return (
-    <nav>
-      <ul>
-        <li>
+    <nav className="navContainer">
+      <ul className="inline-block flex-grow">
+        <li className="navbar-item">
           <Link to="/">Home</Link>
         </li>
-        <li>
+        <li className="navbar-item">
           <Link to="/boards">Boards</Link>
         </li>
-        <li>
+        <li className="navbar-item">
           <Link to="/boards/new">New Board</Link>
         </li>
-        <li>
+      </ul>
+      <ul className="inline-block">
+        <li className="navbar-item">
           <Link to="/about">?</Link>
         </li>
-        <li>
+        <li className="navbar-item">
           <Link to="/profile">Profile</Link>
         </li>
       </ul>
