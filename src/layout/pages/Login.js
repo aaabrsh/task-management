@@ -15,7 +15,7 @@ const Login = (props) => {
   };
 
   const [placeholder, setPlaceholder] = useState(INITIAL_PLACEHOLDERS);
-  const [errors, serErrors] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({});
 
   const handleFocus = (event) => {
     toggleLabel({ ...label, [event.target.name]: " visible " });
@@ -29,23 +29,25 @@ const Login = (props) => {
         ...placeholder,
         [event.target.name]: INITIAL_PLACEHOLDERS[event.target.name],
       });
-      serErrors({ ...errors, [event.target.name]: "This field is required." });
+      setErrors({ ...errors, [event.target.name]: "This field is required." });
     }
   };
 
   const handleValidation = (event) => {
     if (event.target.value == "") {
-      serErrors({ ...errors, [event.target.name]: "This field is required." });
+      setErrors({ ...errors, [event.target.name]: "This field is required." });
     } else if (
       event.target.name == "password" &&
       event.target.value.length < 8
     ) {
-      serErrors({
+      setErrors({
         ...errors,
         [event.target.name]: "Password should be at least 8 characters long.",
       });
     } else {
-      serErrors({ ...errors, [event.target.name]: "" });
+      let tempErr = { ...errors };
+      delete tempErr[event.target.name];
+      setErrors({ ...tempErr });
     }
   };
 
@@ -108,7 +110,7 @@ const Login = (props) => {
           )}
         </div>
         <button
-          disabled={errors.password || errors.username}
+          disabled={Object.keys(errors).length !== 0}
           className="button w-full enabled:bg-blue-900 text-white font-semibold mt-6 disabled:bg-blue-900/40"
         >
           Log In
