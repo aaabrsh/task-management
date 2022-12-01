@@ -10,6 +10,8 @@ import PageNotFound from "./layout/pages/PageNotFound";
 import Boards from "./layout/pages/Boards";
 import About from "./layout/pages/About";
 import Profile from "./layout/pages/Profile";
+import Login from "./layout/pages/Login";
+import Signup from "./layout/pages/Signup";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -25,6 +27,8 @@ root.render(
           <Route path="about" element={<About />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
