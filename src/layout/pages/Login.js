@@ -64,7 +64,7 @@ const Login = (props) => {
   };
 
   return (
-    <div className="bg-gray-100/50 h-screen flex flex-col justify-center items-center">
+    <div className="bg-gray-300/50 h-screen flex flex-col justify-center items-center">
       <div className="mb-4 text-center">
         <h1 className="text-3xl">Log in to your account</h1>
         <div>or</div>
