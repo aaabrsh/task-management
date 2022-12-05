@@ -2,7 +2,7 @@ import Card from "../../components/Card";
 
 const Home = (props) => {
   return (
-    <div className="card-container">
+    <div className="card-container py-5 px-10">
        <Card
         classes="bg-gradient-to-br from-blue-400 via-blue-500 to-blue-800 text-white"
         body="The total number of boards you have is 4. You can create a new board by clicking on the 'New Board' button."

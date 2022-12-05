@@ -6,7 +6,7 @@ const Layout = (props) => {
   return (
     <>
       <Navbar />
-      <div className="flex-grow px-10 py-5">
+      <div className="flex-grow">
         <Outlet />
       </div>
       <Footer />

@@ -77,10 +77,9 @@ const Signup = (props) => {
       email: formData.get("email"),
       username: formData.get("username"),
       password: formData.get("password"),
-      // confirm_password: formData.get("confirm_password"),
     };
 
-    if (payload.confirm_password != payload.password) {
+    if (formData.get("confirm_password") != payload.password) {
       setErrors({ ...errors, confirm_password: "Passwords do not match." });
       return;
     }
