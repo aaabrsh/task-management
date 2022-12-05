@@ -33,17 +33,19 @@ const BoardView = (props) => {
           temp_completedTasks.push(task);
           break;
       }
-    })
+    });
     setBacklogTasks([...temp_backlogTasks]);
     setTodoTasks([...temp_todoTasks]);
     setInProgressTasks([...temp_inProgressTasks]);
     setCompletedTasks([...temp_completedTasks]);
-
-  }, [tasks])
+  }, [tasks]);
 
   return (
     <div className="px-20 h-full">
-      <h1 className="p-5 bg-gray-300/20 text-lg">Board Name</h1>
+      <div className="p-5 bg-gray-300/20 flex">
+        <h1 className="text-lg flex-grow">Board Name</h1>
+        <button className="button bg-yellow-900 text-white font-semibold">Edit Board</button>
+      </div>
       <div className="columns-container">
         <Column title="Backlog" tasks={backlogTasks} />
         <Column title="To Do" tasks={todoTasks} />

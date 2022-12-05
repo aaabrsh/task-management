@@ -106,6 +106,6 @@ h6 {
   }
 
   .task-container{
-    @apply bg-[#fff] mb-2 p-2 shadow;
+    @apply bg-[#fff] mb-2 p-2 shadow text-black;
   }
 }
