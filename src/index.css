@@ -88,4 +88,24 @@ h6 {
   .error-message {
     @apply text-red-600 font-extrabold;
   }
+
+  .columns-container {
+    @apply py-5 flex overflow-x-auto gap-x-4;
+  }
+
+  .column {
+    @apply flex flex-col min-h-[500px] min-w-[200px] max-w-[200px];
+  }
+
+  .column-header {
+    @apply bg-gray-300/20 px-2 py-5 font-bold mb-5;
+  }
+  
+  .column-body{
+    @apply flex-grow bg-gray-300/20 p-2;
+  }
+
+  .task-container{
+    @apply bg-[#fff] mb-2 p-2 shadow;
+  }
 }
