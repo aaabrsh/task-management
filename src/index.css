@@ -100,12 +100,28 @@ h6 {
   .column-header {
     @apply bg-gray-300/20 px-2 py-5 font-bold mb-5;
   }
-  
-  .column-body{
+
+  .column-body {
     @apply flex-grow bg-gray-300/20 p-2;
   }
 
-  .task-container{
+  .task-container {
     @apply bg-[#fff] mb-2 p-2 shadow text-black;
+  }
+
+  .board-card {
+    @apply flex flex-col rounded-lg w-64 h-80 px-8 py-6 bg-gray-300/20 border-l-8;
+  }
+
+  .list {
+    @apply flex my-1;
+  }
+
+  .list-label {
+    @apply flex-grow;
+  }
+
+  .badge {
+    @apply bg-gray-400 text-white flex justify-center items-center px-1 min-w-[25px] h-[15px] text-xs float-right rounded-xl;
   }
 }

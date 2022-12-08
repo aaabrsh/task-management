@@ -7,7 +7,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import BoardView from "../../components/containers/BoardView";
 import TasksList from "../../components/containers/TasksList";
 
-const Boards = (props) => {
+const Board = (props) => {
   const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
@@ -44,4 +44,4 @@ const Boards = (props) => {
   );
 };
 
-export default Boards;
+export default Board;
