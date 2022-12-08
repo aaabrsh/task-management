@@ -8,6 +8,9 @@ const BoardView = (props) => {
   const [todoTasks, setTodoTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
+  const dragItem = useRef();
+  const dragOverColumn = useRef();
+  const dragFromColumn = useRef();
 
   useEffect(() => {
     setTasks([...tasksList]);
@@ -40,17 +43,109 @@ const BoardView = (props) => {
     setCompletedTasks([...temp_completedTasks]);
   }, [tasks]);
 
+  const handleDragStart = (event, id, column) => {
+    dragItem.current = tasks.find((task) => task.id === id);
+    dragFromColumn.current = column;
+  };
+  const handleDragEnter = (event, column) => {
+    switch (column) {
+      case "backlog":
+        dragOverColumn.current = "backlog";
+        break;
+      case "todo":
+        dragOverColumn.current = "todo";
+        break;
+      case "in-progress":
+        dragOverColumn.current = "in-progress";
+        break;
+      case "completed":
+        dragOverColumn.current = "completed";
+        break;
+    }
+  };
+  const handleDropItem = () => {
+    if (dragFromColumn.current != dragOverColumn.current) {
+      switch (dragFromColumn.current) {
+        case "backlog":
+          setBacklogTasks((tasks) =>
+            tasks.filter((task) => task.id !== dragItem.current.id)
+          );
+          break;
+        case "todo":
+          setTodoTasks((tasks) =>
+            tasks.filter((task) => task.id !== dragItem.current.id)
+          );
+          break;
+        case "in-progress":
+          setInProgressTasks((tasks) =>
+            tasks.filter((task) => task.id !== dragItem.current.id)
+          );
+          break;
+        case "completed":
+          setCompletedTasks((tasks) =>
+            tasks.filter((task) => task.id !== dragItem.current.id)
+          );
+          break;
+      }
+
+      switch (dragOverColumn.current) {
+        case "backlog":
+          setBacklogTasks((tasks) => [...tasks, dragItem.current]);
+          break;
+        case "todo":
+          setTodoTasks((tasks) => [...tasks, dragItem.current]);
+          break;
+        case "in-progress":
+          setInProgressTasks((tasks) => [...tasks, dragItem.current]);
+          break;
+        case "completed":
+          setCompletedTasks((tasks) => [...tasks, dragItem.current]);
+          break;
+      }
+    }
+  };
+
   return (
     <div className="px-20 h-full">
       <div className="p-5 bg-gray-300/20 flex">
         <h1 className="text-lg flex-grow">Board Name</h1>
-        <button className="button bg-yellow-900 text-white font-semibold">Edit Board</button>
+        <button className="button bg-yellow-900 text-white font-semibold">
+          Edit Board
+        </button>
       </div>
       <div className="columns-container">
-        <Column title="Backlog" tasks={backlogTasks} />
-        <Column title="To Do" tasks={todoTasks} />
-        <Column title="In Progress" tasks={inProgressTasks} />
-        <Column title="Completed" tasks={completedTasks} />
+        <Column
+          title="Backlog"
+          column="backlog"
+          tasks={backlogTasks}
+          dragStart={handleDragStart}
+          dragEnter={(e) => handleDragEnter(e, "backlog")}
+          dropItem={handleDropItem}
+        />
+        <Column
+          title="To Do"
+          column="todo"
+          tasks={todoTasks}
+          dragStart={handleDragStart}
+          dragEnter={(e) => handleDragEnter(e, "todo")}
+          dropItem={handleDropItem}
+        />
+        <Column
+          title="In Progress"
+          column="in-progress"
+          tasks={inProgressTasks}
+          dragStart={handleDragStart}
+          dragEnter={(e) => handleDragEnter(e, "in-progress")}
+          dropItem={handleDropItem}
+        />
+        <Column
+          title="Completed"
+          column="completed"
+          tasks={completedTasks}
+          dragStart={handleDragStart}
+          dragEnter={(e) => handleDragEnter(e, "completed")}
+          dropItem={handleDropItem}
+        />
       </div>
     </div>
   );
