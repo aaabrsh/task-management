@@ -104,6 +104,9 @@ h6 {
     @apply flex-grow bg-gray-300/20 p-2;
   }
 
+  .column-body-hover {
+    @apply flex-grow bg-blue-400/50 border-2 border-dashed border-blue-400;
+  }
   .task-container {
     @apply bg-[#fff] mb-2 p-2 shadow text-black;
   }

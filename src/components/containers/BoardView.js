@@ -4,11 +4,20 @@ import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
 
 const BoardView = ({ board, tasks }) => {
+  const noHoverState = {
+    backlog: false,
+    todo: false,
+    inProgress: false,
+    completed: false,
+  };
   const [backlogTasks, setBacklogTasks] = useState([]);
   const [todoTasks, setTodoTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
   const [open, openDialog] = useState(false);
+  const [isHovered, setHovered] = useState(noHoverState);
+  const [hoverStarted, setHoverStarted] = useState(false);
+  const [draggedItemId, setDraggedItem] = useState(null);
   const dragItem = useRef();
   const dragOverColumn = useRef();
   const dragFromColumn = useRef();
@@ -40,26 +49,26 @@ const BoardView = ({ board, tasks }) => {
     setCompletedTasks([...temp_completedTasks]);
   }, [tasks]);
 
-  const handleDragStart = (event, id, column) => {
+  const handleDragItemStart = (event, id, column) => {
+    setHoverStarted(true);
     dragItem.current = tasks.find((task) => task.id === id);
     dragFromColumn.current = column;
+    setDraggedItem(id);
   };
-  const handleDragEnter = (event, column) => {
-    switch (column) {
-      case "backlog":
-        dragOverColumn.current = "backlog";
-        break;
-      case "todo":
-        dragOverColumn.current = "todo";
-        break;
-      case "in-progress":
-        dragOverColumn.current = "in-progress";
-        break;
-      case "completed":
-        dragOverColumn.current = "completed";
-        break;
-    }
+
+  const handleDragOverCol = (e, col) => {
+    e.preventDefault();
+    dragOverColumn.current = col;
   };
+
+  const handleDragLeaveCol = (column) => {
+    setHovered((cur) => ({ ...cur, [column]: false }));
+  };
+
+  const handleDragEnterCol = (column) => {
+    setHovered((cur) => ({ ...cur, [column]: true }));
+  };
+
   const handleDropItem = () => {
     if (dragFromColumn.current != dragOverColumn.current) {
       switch (dragFromColumn.current) {
@@ -100,6 +109,9 @@ const BoardView = ({ board, tasks }) => {
           break;
       }
     }
+    setDraggedItem(null);
+    setHoverStarted(false);
+    setHovered(noHoverState);
   };
 
   return (
@@ -121,32 +133,52 @@ const BoardView = ({ board, tasks }) => {
             title="Backlog"
             column="backlog"
             tasks={backlogTasks}
-            dragStart={handleDragStart}
-            dragEnter={(e) => handleDragEnter(e, "backlog")}
+            isHovered={isHovered.backlog}
+            hoverStarted={hoverStarted}
+            draggedItemId={draggedItemId}
+            dragItemStart={handleDragItemStart}
+            dragOverCol={(e) => handleDragOverCol(e, "backlog")}
+            dragEnter={() => handleDragEnterCol("backlog")}
+            dragLeave={() => handleDragLeaveCol("backlog")}
             dropItem={handleDropItem}
           />
           <Column
             title="To Do"
             column="todo"
             tasks={todoTasks}
-            dragStart={handleDragStart}
-            dragEnter={(e) => handleDragEnter(e, "todo")}
+            isHovered={isHovered.todo}
+            draggedItemId={draggedItemId}
+            hoverStarted={hoverStarted}
+            dragItemStart={handleDragItemStart}
+            dragOverCol={(e) => handleDragOverCol(e, "todo")}
+            dragEnter={() => handleDragEnterCol("todo")}
+            dragLeave={() => handleDragLeaveCol("todo")}
             dropItem={handleDropItem}
           />
           <Column
             title="In Progress"
             column="in-progress"
             tasks={inProgressTasks}
-            dragStart={handleDragStart}
-            dragEnter={(e) => handleDragEnter(e, "in-progress")}
+            isHovered={isHovered.inProgress}
+            hoverStarted={hoverStarted}
+            draggedItemId={draggedItemId}
+            dragItemStart={handleDragItemStart}
+            dragOverCol={(e) => handleDragOverCol(e, "in-progress")}
+            dragEnter={() => handleDragEnterCol("inProgress")}
+            dragLeave={() => handleDragLeaveCol("inProgress")}
             dropItem={handleDropItem}
           />
           <Column
             title="Completed"
             column="completed"
             tasks={completedTasks}
-            dragStart={handleDragStart}
-            dragEnter={(e) => handleDragEnter(e, "completed")}
+            isHovered={isHovered.completed}
+            hoverStarted={hoverStarted}
+            draggedItemId={draggedItemId}
+            dragItemStart={handleDragItemStart}
+            dragOverCol={(e) => handleDragOverCol(e, "completed")}
+            dragEnter={() => handleDragEnterCol("completed")}
+            dragLeave={() => handleDragLeaveCol("completed")}
             dropItem={handleDropItem}
           />
         </div>
