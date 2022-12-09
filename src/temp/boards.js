@@ -3,7 +3,7 @@ export const boards = [
     id: 1,
     name: "Task Management",
     description:
-      "This board was created to manage the development process of the app called task-manegement. adhasd asdjhasd asdjkasd kajsda asjdaskdkad asjdkasd",
+      "This board was created to manage the development process of the app called task-manegement.",
   },
   {
     id: 2,

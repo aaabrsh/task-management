@@ -1,19 +1,28 @@
+import { Dialog } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { tasks as tasksList } from "../../temp/tasks";
+import { boards } from "../../temp/boards";
+import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
+import { useParams } from "react-router-dom";
 
 const BoardView = (props) => {
+  const { id } = useParams();
+  const [board, setBoard] = useState({});
   const [tasks, setTasks] = useState([]);
   const [backlogTasks, setBacklogTasks] = useState([]);
   const [todoTasks, setTodoTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [open, openDialog] = useState(false);
   const dragItem = useRef();
   const dragOverColumn = useRef();
   const dragFromColumn = useRef();
 
   useEffect(() => {
     setTasks([...tasksList]);
+    const currentBoard = boards.find((borad) => borad.id == id);
+    setBoard({ ...currentBoard });
   }, []);
 
   useEffect(() => {
@@ -106,48 +115,78 @@ const BoardView = (props) => {
   };
 
   return (
-    <div className="px-20 h-full">
-      <div className="p-5 bg-gray-300/20 flex">
-        <h1 className="text-lg flex-grow">Board Name</h1>
-        <button className="button bg-yellow-900 text-white font-semibold">
-          Edit Board
-        </button>
+    <>
+      <div className="px-20 h-full">
+        <div className="p-5 bg-gray-300/20 flex">
+          <h1 className="text-lg flex-grow">{board?.name}</h1>
+          <button
+            className="button bg-yellow-500 font-semibold disabled:invisible"
+            onClick={() => openDialog(true)}
+            disabled={!Object.keys(board).length}
+          >
+            Edit Board
+          </button>
+        </div>
+        <div>{board?.description}</div>
+        <div className="columns-container">
+          <Column
+            title="Backlog"
+            column="backlog"
+            tasks={backlogTasks}
+            dragStart={handleDragStart}
+            dragEnter={(e) => handleDragEnter(e, "backlog")}
+            dropItem={handleDropItem}
+          />
+          <Column
+            title="To Do"
+            column="todo"
+            tasks={todoTasks}
+            dragStart={handleDragStart}
+            dragEnter={(e) => handleDragEnter(e, "todo")}
+            dropItem={handleDropItem}
+          />
+          <Column
+            title="In Progress"
+            column="in-progress"
+            tasks={inProgressTasks}
+            dragStart={handleDragStart}
+            dragEnter={(e) => handleDragEnter(e, "in-progress")}
+            dropItem={handleDropItem}
+          />
+          <Column
+            title="Completed"
+            column="completed"
+            tasks={completedTasks}
+            dragStart={handleDragStart}
+            dragEnter={(e) => handleDragEnter(e, "completed")}
+            dropItem={handleDropItem}
+          />
+        </div>
       </div>
-      <div className="columns-container">
-        <Column
-          title="Backlog"
-          column="backlog"
-          tasks={backlogTasks}
-          dragStart={handleDragStart}
-          dragEnter={(e) => handleDragEnter(e, "backlog")}
-          dropItem={handleDropItem}
-        />
-        <Column
-          title="To Do"
-          column="todo"
-          tasks={todoTasks}
-          dragStart={handleDragStart}
-          dragEnter={(e) => handleDragEnter(e, "todo")}
-          dropItem={handleDropItem}
-        />
-        <Column
-          title="In Progress"
-          column="in-progress"
-          tasks={inProgressTasks}
-          dragStart={handleDragStart}
-          dragEnter={(e) => handleDragEnter(e, "in-progress")}
-          dropItem={handleDropItem}
-        />
-        <Column
-          title="Completed"
-          column="completed"
-          tasks={completedTasks}
-          dragStart={handleDragStart}
-          dragEnter={(e) => handleDragEnter(e, "completed")}
-          dropItem={handleDropItem}
-        />
-      </div>
-    </div>
+      <Dialog
+        open={open}
+        onClose={() => openDialog(false)}
+        fullWidth={true}
+        sx={{
+          "& .MuiDialog-paper": {
+            maxWidth: "900px",
+            maxHeight: "auto",
+            borderRadius: "15px",
+            border: "1px solid teal",
+          },
+        }}
+      >
+        <div className="px-10 py-8">
+          <h1 className="text-3xl text-teal-900">Edit Board</h1>
+          <BoardForm
+            onFormSubmit={(payload) => console.log(payload)}
+            closeForm={() => openDialog(false)}
+            formData={board}
+            isEditForm={true}
+          />
+        </div>
+      </Dialog>
+    </>
   );
 };
 

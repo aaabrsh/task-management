@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Dialog } from "@mui/material";
+import NewBoard from "../../layout/pages/NewBoard";
+import BoardForm from "./BoardForm";
+import { borderRadius } from "@mui/system";
 
 function BoardCard({ board }) {
   const [description, showDescription] = useState();
+  const [open, openDialog] = useState(false);
 
   const descriptionView = <p>{board.description}</p>;
 
@@ -33,28 +38,56 @@ function BoardCard({ board }) {
   );
 
   return (
-    <div className="board-card">
-      <div
-        className="flex-grow cursor-pointer"
-        onClick={() => showDescription((desc) => !desc)}
-      >
-        {description && descriptionView}
-        {!description && defaultView}
-      </div>
-      {!description && (
-        <div className="flex flex-col">
-          <button className="button bg-yellow-500/50 hover:bg-yellow-500 mb-2">
-            Edit Board
-          </button>
-          <Link
-            className="button bg-blue-900/80 hover:bg-blue-900 text-white"
-            to={"/boards/" + board.id}
-          >
-            View Board
-          </Link>
+    <>
+      <div className="board-card">
+        <div
+          className="flex-grow cursor-pointer"
+          onClick={() => showDescription((desc) => !desc)}
+        >
+          {description && descriptionView}
+          {!description && defaultView}
         </div>
-      )}
-    </div>
+        {!description && (
+          <div className="flex flex-col">
+            <button
+              className="button bg-yellow-500/50 hover:bg-yellow-500 mb-2"
+              onClick={() => openDialog(true)}
+            >
+              Edit Board
+            </button>
+            <Link
+              className="button bg-blue-900/80 hover:bg-blue-900 text-white"
+              to={"/boards/" + board.id}
+            >
+              Open Board
+            </Link>
+          </div>
+        )}
+      </div>
+      <Dialog
+        open={open}
+        onClose={() => openDialog(false)}
+        fullWidth={true}
+        sx={{
+          "& .MuiDialog-paper": {
+            maxWidth: "900px",
+            maxHeight: "auto",
+            borderRadius: "15px",
+            border: "1px solid teal",
+          },
+        }}
+      >
+        <div className="px-10 py-8">
+          <h1 className="text-3xl text-teal-900">Edit Board</h1>
+          <BoardForm
+            onFormSubmit={(payload) => console.log(payload)}
+            closeForm={() => openDialog(false)}
+            formData={board}
+            isEditForm={true}
+          />
+        </div>
+      </Dialog>
+    </>
   );
 }
 
