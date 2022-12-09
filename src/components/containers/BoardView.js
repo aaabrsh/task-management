@@ -1,15 +1,9 @@
 import { Dialog } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { tasks as tasksList } from "../../temp/tasks";
-import { boards } from "../../temp/boards";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
-import { useParams } from "react-router-dom";
 
-const BoardView = (props) => {
-  const { id } = useParams();
-  const [board, setBoard] = useState({});
-  const [tasks, setTasks] = useState([]);
+const BoardView = ({ board, tasks }) => {
   const [backlogTasks, setBacklogTasks] = useState([]);
   const [todoTasks, setTodoTasks] = useState([]);
   const [inProgressTasks, setInProgressTasks] = useState([]);
@@ -18,12 +12,6 @@ const BoardView = (props) => {
   const dragItem = useRef();
   const dragOverColumn = useRef();
   const dragFromColumn = useRef();
-
-  useEffect(() => {
-    setTasks([...tasksList]);
-    const currentBoard = boards.find((borad) => borad.id == id);
-    setBoard({ ...currentBoard });
-  }, []);
 
   useEffect(() => {
     var temp_backlogTasks = [];
