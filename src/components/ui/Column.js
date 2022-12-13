@@ -13,6 +13,7 @@ function Column({
   isHovered = false,
   hoverStarted,
   draggedItemId,
+  taskClick,
 }) {
   return (
     <div
@@ -39,7 +40,7 @@ function Column({
                 : "opacity-50"
             }
           >
-            <Task task={task} />
+            <Task task={task} taskClick={taskClick} />
           </div>
         ))}
       </div>

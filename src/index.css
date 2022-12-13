@@ -126,4 +126,8 @@ h6 {
   .badge {
     @apply bg-gray-400 text-white flex justify-center items-center px-1 min-w-[25px] h-[15px] text-xs float-right rounded-xl;
   }
+
+  .icon-btn {
+    @apply cursor-pointer hover:text-blue-600;
+  }
 }

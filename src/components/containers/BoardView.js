@@ -114,6 +114,10 @@ const BoardView = ({ board, tasks }) => {
     setHovered(noHoverState);
   };
 
+  const handleTaskClick = (task) => {
+    console.log(task);
+  };
+
   return (
     <>
       <div className="px-20 h-full">
@@ -141,6 +145,7 @@ const BoardView = ({ board, tasks }) => {
             dragEnter={() => handleDragEnterCol("backlog")}
             dragLeave={() => handleDragLeaveCol("backlog")}
             dropItem={handleDropItem}
+            taskClick={handleTaskClick}
           />
           <Column
             title="To Do"
@@ -154,6 +159,7 @@ const BoardView = ({ board, tasks }) => {
             dragEnter={() => handleDragEnterCol("todo")}
             dragLeave={() => handleDragLeaveCol("todo")}
             dropItem={handleDropItem}
+            taskClick={handleTaskClick}
           />
           <Column
             title="In Progress"
@@ -167,6 +173,7 @@ const BoardView = ({ board, tasks }) => {
             dragEnter={() => handleDragEnterCol("inProgress")}
             dragLeave={() => handleDragLeaveCol("inProgress")}
             dropItem={handleDropItem}
+            taskClick={handleTaskClick}
           />
           <Column
             title="Completed"
@@ -180,6 +187,7 @@ const BoardView = ({ board, tasks }) => {
             dragEnter={() => handleDragEnterCol("completed")}
             dragLeave={() => handleDragLeaveCol("completed")}
             dropItem={handleDropItem}
+            taskClick={handleTaskClick}
           />
         </div>
       </div>
