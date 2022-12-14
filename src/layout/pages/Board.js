@@ -27,8 +27,17 @@ const Board = (props) => {
     }
   }, []);
 
-  const handleChange = (event, newValue) => {
+  const handleTabChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleMoveTask = (id, destination) => {
+    const tempTasks = [...tasks];
+    const task = tempTasks.find((t) => t.id === id);
+    const index = tempTasks.indexOf(task);
+    tempTasks[index] = { ...tempTasks[index], status: destination };
+    //TODO change the task status at the api not here
+    setTasks(tempTasks);
   };
 
   return (
@@ -45,7 +54,7 @@ const Board = (props) => {
           >
             <ArrowCircleLeftOutlinedIcon className="" />
           </Link>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
+          <TabList onChange={handleTabChange} aria-label="lab API tabs example">
             <Tab
               label="Board View"
               value="1"
@@ -59,7 +68,7 @@ const Board = (props) => {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <BoardView board={board} tasks={tasks} />
+          <BoardView board={board} tasks={tasks} moveTask={handleMoveTask} />
         </TabPanel>
         <TabPanel value="2">
           <TasksList />

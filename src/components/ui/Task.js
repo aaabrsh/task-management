@@ -6,7 +6,7 @@ import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Divider, MenuItem, MenuList, Paper, Popover } from "@mui/material";
 
-function Task({ task, taskClick }) {
+function Task({ task, taskClick, moveTask }) {
   const [anchorElement, setAnchorElement] = useState(null);
   const [open, setOpen] = useState(false);
 
@@ -23,6 +23,34 @@ function Task({ task, taskClick }) {
 
   const handleMenuClick = (event) => {
     setAnchorElement(event.currentTarget);
+  };
+
+  const handleBackClick = () => {
+    switch (task.status) {
+      case "todo":
+        moveTask("backlog");
+        break;
+      case "in-progress":
+        moveTask("todo");
+        break;
+      case "completed":
+        moveTask("in-progress");
+        break;
+    }
+  };
+
+  const handleForwardClick = (event) => {
+    switch (task.status) {
+      case "backlog":
+        moveTask("todo");
+        break;
+      case "todo":
+        moveTask("in-progress");
+        break;
+      case "in-progress":
+        moveTask("completed");
+        break;
+    }
   };
 
   return (
@@ -52,11 +80,15 @@ function Task({ task, taskClick }) {
             <Paper sx={{ width: 120, color: "#666" }}>
               <MenuList>
                 <div className="h-[20px] flex justify-between px-4 mb-2">
-                  <span className="icon-btn">
-                    <ArrowBack sx={{ fontSize: 20 }} />
+                  <span className="icon-btn" onClick={handleBackClick}>
+                    {task.status !== "backlog" && (
+                      <ArrowBack sx={{ fontSize: 20 }} />
+                    )}
                   </span>
-                  <span className="icon-btn">
-                    <ArrowForward sx={{ fontSize: 20 }} />
+                  <span className="icon-btn" onClick={handleForwardClick}>
+                    {task.status !== "completed" && (
+                      <ArrowForward sx={{ fontSize: 20 }} />
+                    )}
                   </span>
                 </div>
                 <Divider />

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
 
-const BoardView = ({ board, tasks }) => {
+const BoardView = ({ board, tasks, moveTask }) => {
   const noHoverState = {
     backlog: false,
     todo: false,
@@ -146,6 +146,7 @@ const BoardView = ({ board, tasks }) => {
             dragLeave={() => handleDragLeaveCol("backlog")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
+            moveTask={moveTask}
           />
           <Column
             title="To Do"
@@ -160,6 +161,7 @@ const BoardView = ({ board, tasks }) => {
             dragLeave={() => handleDragLeaveCol("todo")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
+            moveTask={moveTask}
           />
           <Column
             title="In Progress"
@@ -174,6 +176,7 @@ const BoardView = ({ board, tasks }) => {
             dragLeave={() => handleDragLeaveCol("inProgress")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
+            moveTask={moveTask}
           />
           <Column
             title="Completed"
@@ -188,6 +191,7 @@ const BoardView = ({ board, tasks }) => {
             dragLeave={() => handleDragLeaveCol("completed")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
+            moveTask={moveTask}
           />
         </div>
       </div>
