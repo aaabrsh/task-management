@@ -1,13 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "CeraProMedium";
+  src: local("CeraProMedium"), url(./fonts/CeraProMedium.otf) format("opentype");
+}
+
+@font-face {
+  font-family: "CeraProBold";
+  src: local("CeraProBold"), url(./fonts/CeraProBold.otf) format("opentype");
+}
+
+@font-face {
+  font-family: "CeraProLight";
+  src: local("CeraProLight"), url(./fonts/CeraProLight.otf) format("opentype");
+}
+
 body {
+  color: #444;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "CeraProLight", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "CeraProBold";
+}
+
+#root {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
+@layer components {
+  .navContainer {
+    @apply flex px-24 bg-gray-100 text-blue-900 font-semibold;
+  }
+
+  .navbar-item {
+    @apply inline-block px-4 py-3 border-b-4 border-transparent hover:border-blue-900 ease-in duration-200;
+  }
+
+  .card-container {
+    @apply max-w-screen-xl m-auto flex flex-wrap gap-4;
+  }
+
+  .card {
+    @apply flex flex-col rounded-lg w-72 h-52 px-8 py-6;
+  }
+
+  .card-header {
+    @apply text-xl font-semibold pb-2 mb-2 border-b-2 border-[#ffffff80];
+  }
+
+  .card-text {
+    @apply w-full text-justify flex-grow;
+  }
+
+  .button {
+    @apply text-center px-4 py-2 rounded bg-[#ffffffc0] text-gray-900;
+  }
+
+  .input {
+    @apply block w-full border-b-2 border-gray-400 px-0 p-3 py-1 focus:outline-0 focus:border-blue-600 text-gray-800 font-semibold;
+  }
+
+  .label {
+    @apply text-blue-900 text-xs font-semibold;
+  }
+
+  .form-container {
+    @apply w-96 h-72 px-10 py-8 bg-white border flex flex-col justify-center rounded-lg border-gray-200 shadow;
+  }
+
+  .error-message {
+    @apply text-red-600 font-extrabold;
+  }
+
+  .columns-container {
+    @apply py-5 flex overflow-x-auto gap-x-4;
+  }
+
+  .column {
+    @apply flex flex-col min-h-[500px] min-w-[200px] max-w-[200px];
+  }
+
+  .column-header {
+    @apply bg-gray-300/20 px-2 py-5 font-bold mb-5;
+  }
+
+  .column-body {
+    @apply flex-grow bg-gray-300/20 p-2;
+  }
+
+  .column-body-hover {
+    @apply flex-grow bg-blue-400/50 border-2 border-dashed border-blue-400;
+  }
+  .task-container {
+    @apply bg-[#fff] mb-2 p-2 shadow text-black;
+  }
+
+  .board-card {
+    @apply flex flex-col rounded-lg w-64 h-80 px-8 py-6 bg-gray-300/20 border-l-8 overflow-y-auto;
+  }
+
+  .list {
+    @apply flex my-1;
+  }
+
+  .list-label {
+    @apply flex-grow;
+  }
+
+  .badge {
+    @apply bg-gray-400 text-white flex justify-center items-center px-1 min-w-[25px] h-[15px] text-xs float-right rounded-xl;
+  }
+
+  .icon-btn {
+    @apply cursor-pointer hover:text-blue-600;
+  }
 }
