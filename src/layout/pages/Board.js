@@ -7,38 +7,25 @@ import TabPanel from "@mui/lab/TabPanel";
 import BoardView from "../../components/containers/BoardView";
 import TasksList from "../../components/containers/TasksList";
 import { Link, useParams } from "react-router-dom";
-import { tasks as tasksList } from "../../temp/tasks";
-import { boards } from "../../temp/boards";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllTasks } from "../../reducers/taskSlice";
+import { fetchBoard } from "../../reducers/boardSlice";
 
-const Board = (props) => {
+const Board = () => {
   const { id } = useParams();
-  const [board, setBoard] = useState({});
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const board = useSelector((state) => state.boards);
+  const tasks = useSelector((state) => state.tasks);
   const [value, setValue] = useState("1");
-  const currentBoard = useSelector(state => state.boards).find((borad) => borad.id == id);
 
   useEffect(() => {
-    if (currentBoard) {
-      //if a board with the given id is found
-      setBoard({ ...currentBoard });
-      const currentTasks = tasksList.filter((task) => task.board_id == id);
-      setTasks([...currentTasks]);
-    }
+    dispatch(fetchAllTasks({ id: id }));
+    dispatch(fetchBoard({ id: id }));
   }, []);
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleMoveTask = (id, destination) => {
-    const tempTasks = [...tasks];
-    const task = tempTasks.find((t) => t.id === id);
-    const index = tempTasks.indexOf(task);
-    tempTasks[index] = { ...tempTasks[index], status: destination };
-    //TODO change the task status at the api not here
-    setTasks(tempTasks);
   };
 
   return (
@@ -69,7 +56,7 @@ const Board = (props) => {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <BoardView board={board} tasks={tasks} moveTask={handleMoveTask} />
+          <BoardView board={board} tasks={tasks} />
         </TabPanel>
         <TabPanel value="2">
           <TasksList />

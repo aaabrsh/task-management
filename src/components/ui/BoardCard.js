@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Dialog } from "@mui/material";
-import NewBoard from "../../layout/pages/NewBoard";
 import BoardForm from "./BoardForm";
-import { borderRadius } from "@mui/system";
 
 function BoardCard({ board }) {
   const [description, showDescription] = useState();

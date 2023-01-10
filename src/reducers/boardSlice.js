@@ -11,9 +11,12 @@ export const boardSlice = createSlice({
       //redux toolkit automatically generate actions corresponding to the reducer names given here
       return [...boards];
     },
+    fetchBoard: (state, actions) => {
+      return boards.find((b) => b.id == actions.payload.id); //not strictly equal because id in action is a string
+    },
   },
 });
 
-export const { fetchAllBoards } = boardSlice.actions;
+export const { fetchAllBoards, fetchBoard } = boardSlice.actions;
 
 export default boardSlice.reducer;
