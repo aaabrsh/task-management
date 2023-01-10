@@ -10,15 +10,16 @@ import { Link, useParams } from "react-router-dom";
 import { tasks as tasksList } from "../../temp/tasks";
 import { boards } from "../../temp/boards";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
+import { useSelector } from "react-redux";
 
 const Board = (props) => {
   const { id } = useParams();
   const [board, setBoard] = useState({});
   const [tasks, setTasks] = useState([]);
   const [value, setValue] = useState("1");
+  const currentBoard = useSelector(state => state.boards).find((borad) => borad.id == id);
 
   useEffect(() => {
-    const currentBoard = boards.find((borad) => borad.id == id);
     if (currentBoard) {
       //if a board with the given id is found
       setBoard({ ...currentBoard });
