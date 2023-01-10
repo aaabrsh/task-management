@@ -56,7 +56,7 @@ function Task({ task, taskClick, moveTask }) {
   return (
     <div className="task-container">
       <div className="flex h-[30px] items-center text-gray-500">
-        <span className="flex-grow">{task.id}</span>
+        <span className="flex-grow cursor-move">{task.id}</span>
         <span
           className="cursor-pointer p-0.5 rounded-3xl border hover:border-2 hover:border-blue-300"
           onClick={handleMenuClick}
@@ -99,7 +99,7 @@ function Task({ task, taskClick, moveTask }) {
           </div>
         </Popover>
       </div>
-      <div className="cursor-pointer" onClick={() => taskClick(task)}>
+      <div className="cursor-move" onClick={() => taskClick(task)}>
         <div>{task.name}</div>
         <div className="flex h-[30px] items-center text-gray-500 text-xs">
           <span className="flex-grow">Deadline: {task.deadline}</span>

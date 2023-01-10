@@ -8,6 +8,7 @@ function Column({
   tasks,
   column,
   dragItemStart,
+  dragEnd,
   dragOverCol,
   dropItem,
   dragEnter,
@@ -34,6 +35,7 @@ function Column({
             onDragStart={(e) => {
               dragItemStart(e, task.id, column);
             }}
+            onDragEnd={dragEnd}
             draggable="true"
             className={
               draggedItemId != task.id
@@ -46,7 +48,9 @@ function Column({
             <Task
               task={task}
               taskClick={taskClick}
-              moveTask={(destination) => {dispatch(moveTask({id: task.id, destination: destination})); }}
+              moveTask={(destination) => {
+                dispatch(moveTask({ id: task.id, destination: destination }));
+              }}
             />
           </div>
         ))}

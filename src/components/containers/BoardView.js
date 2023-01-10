@@ -42,6 +42,7 @@ const BoardView = ({ board, tasks }) => {
   };
 
   const handleDropItem = () => {
+    console.log("here")
     if (dragFromColumn.current != dragOverColumn.current) {
       dispatch(
         moveTask({
@@ -85,6 +86,7 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "backlog")}
             dragEnter={() => handleDragEnterCol("backlog")}
             dragLeave={() => handleDragLeaveCol("backlog")}
+            dragEnd={handleDropItem}//incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
@@ -99,6 +101,7 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "todo")}
             dragEnter={() => handleDragEnterCol("todo")}
             dragLeave={() => handleDragLeaveCol("todo")}
+            dragEnd={handleDropItem}//incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
@@ -113,6 +116,7 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "in-progress")}
             dragEnter={() => handleDragEnterCol("inProgress")}
             dragLeave={() => handleDragLeaveCol("inProgress")}
+            dragEnd={handleDropItem}//incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
@@ -127,6 +131,7 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "completed")}
             dragEnter={() => handleDragEnterCol("completed")}
             dragLeave={() => handleDragLeaveCol("completed")}
+            dragEnd={handleDropItem}//incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
