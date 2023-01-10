@@ -10,12 +10,12 @@ import { Link, useParams } from "react-router-dom";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllTasks } from "../../reducers/taskSlice";
-import { fetchBoard } from "../../reducers/boardSlice";
+import { fetchBoard } from "../../reducers/activeBoardSlice";
 
 const Board = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const board = useSelector((state) => state.boards);
+  const board = useSelector((state) => state.active_board);
   const tasks = useSelector((state) => state.tasks);
   const [value, setValue] = useState("1");
 
