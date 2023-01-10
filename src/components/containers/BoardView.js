@@ -1,19 +1,17 @@
 import { Dialog } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { moveTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
 
-const BoardView = ({ board, tasks, moveTask }) => {
+const BoardView = ({ board, tasks }) => {
   const noHoverState = {
     backlog: false,
     todo: false,
     inProgress: false,
     completed: false,
   };
-  const [backlogTasks, setBacklogTasks] = useState([]);
-  const [todoTasks, setTodoTasks] = useState([]);
-  const [inProgressTasks, setInProgressTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
   const [open, openDialog] = useState(false);
   const [isHovered, setHovered] = useState(noHoverState);
   const [hoverStarted, setHoverStarted] = useState(false);
@@ -21,33 +19,7 @@ const BoardView = ({ board, tasks, moveTask }) => {
   const dragItem = useRef();
   const dragOverColumn = useRef();
   const dragFromColumn = useRef();
-
-  useEffect(() => {
-    var temp_backlogTasks = [];
-    var temp_todoTasks = [];
-    var temp_inProgressTasks = [];
-    var temp_completedTasks = [];
-    tasks.map((task) => {
-      switch (task.status) {
-        case "backlog":
-          temp_backlogTasks.push(task);
-          break;
-        case "todo":
-          temp_todoTasks.push(task);
-          break;
-        case "in-progress":
-          temp_inProgressTasks.push(task);
-          break;
-        case "completed":
-          temp_completedTasks.push(task);
-          break;
-      }
-    });
-    setBacklogTasks([...temp_backlogTasks]);
-    setTodoTasks([...temp_todoTasks]);
-    setInProgressTasks([...temp_inProgressTasks]);
-    setCompletedTasks([...temp_completedTasks]);
-  }, [tasks]);
+  const dispatch = useDispatch();
 
   const handleDragItemStart = (event, id, column) => {
     setHoverStarted(true);
@@ -71,43 +43,12 @@ const BoardView = ({ board, tasks, moveTask }) => {
 
   const handleDropItem = () => {
     if (dragFromColumn.current != dragOverColumn.current) {
-      switch (dragFromColumn.current) {
-        case "backlog":
-          setBacklogTasks((tasks) =>
-            tasks.filter((task) => task.id !== dragItem.current.id)
-          );
-          break;
-        case "todo":
-          setTodoTasks((tasks) =>
-            tasks.filter((task) => task.id !== dragItem.current.id)
-          );
-          break;
-        case "in-progress":
-          setInProgressTasks((tasks) =>
-            tasks.filter((task) => task.id !== dragItem.current.id)
-          );
-          break;
-        case "completed":
-          setCompletedTasks((tasks) =>
-            tasks.filter((task) => task.id !== dragItem.current.id)
-          );
-          break;
-      }
-
-      switch (dragOverColumn.current) {
-        case "backlog":
-          setBacklogTasks((tasks) => [...tasks, dragItem.current]);
-          break;
-        case "todo":
-          setTodoTasks((tasks) => [...tasks, dragItem.current]);
-          break;
-        case "in-progress":
-          setInProgressTasks((tasks) => [...tasks, dragItem.current]);
-          break;
-        case "completed":
-          setCompletedTasks((tasks) => [...tasks, dragItem.current]);
-          break;
-      }
+      dispatch(
+        moveTask({
+          id: dragItem.current.id,
+          destination: dragOverColumn.current,
+        })
+      );
     }
     setDraggedItem(null);
     setHoverStarted(false);
@@ -136,7 +77,7 @@ const BoardView = ({ board, tasks, moveTask }) => {
           <Column
             title="Backlog"
             column="backlog"
-            tasks={backlogTasks}
+            tasks={tasks.filter((task) => task.status == "backlog")}
             isHovered={isHovered.backlog}
             hoverStarted={hoverStarted}
             draggedItemId={draggedItemId}
@@ -146,12 +87,11 @@ const BoardView = ({ board, tasks, moveTask }) => {
             dragLeave={() => handleDragLeaveCol("backlog")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
-            moveTask={moveTask}
           />
           <Column
             title="To Do"
             column="todo"
-            tasks={todoTasks}
+            tasks={tasks.filter((task) => task.status == "todo")}
             isHovered={isHovered.todo}
             draggedItemId={draggedItemId}
             hoverStarted={hoverStarted}
@@ -161,12 +101,11 @@ const BoardView = ({ board, tasks, moveTask }) => {
             dragLeave={() => handleDragLeaveCol("todo")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
-            moveTask={moveTask}
           />
           <Column
             title="In Progress"
             column="in-progress"
-            tasks={inProgressTasks}
+            tasks={tasks.filter((task) => task.status == "in-progress")}
             isHovered={isHovered.inProgress}
             hoverStarted={hoverStarted}
             draggedItemId={draggedItemId}
@@ -176,12 +115,11 @@ const BoardView = ({ board, tasks, moveTask }) => {
             dragLeave={() => handleDragLeaveCol("inProgress")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
-            moveTask={moveTask}
           />
           <Column
             title="Completed"
             column="completed"
-            tasks={completedTasks}
+            tasks={tasks.filter((task) => task.status == "completed")}
             isHovered={isHovered.completed}
             hoverStarted={hoverStarted}
             draggedItemId={draggedItemId}
@@ -191,7 +129,6 @@ const BoardView = ({ board, tasks, moveTask }) => {
             dragLeave={() => handleDragLeaveCol("completed")}
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
-            moveTask={moveTask}
           />
         </div>
       </div>

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { moveTask } from "../../reducers/taskSlice";
 import Task from "./Task";
 
 function Column({
@@ -14,8 +16,8 @@ function Column({
   hoverStarted,
   draggedItemId,
   taskClick,
-  moveTask,
 }) {
+  const dispatch = useDispatch();
   return (
     <div
       className="column hover"
@@ -44,7 +46,7 @@ function Column({
             <Task
               task={task}
               taskClick={taskClick}
-              moveTask={(destination) => moveTask(task.id, destination)}
+              moveTask={(destination) => {dispatch(moveTask({id: task.id, destination: destination})); }}
             />
           </div>
         ))}
