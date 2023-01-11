@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import Select from "@mui/material/Select";
+import { FormControl, MenuItem } from "@mui/material";
+import { priorityIcon } from "../../utils/priorityIcon";
 
-function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
+const TaskForm = ({ formData, closeForm }) => {
   const [label, toggleLabel] = useState({
     name: " invisible ",
     description: " invisible ",
@@ -9,14 +12,22 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
   const placeholderTexts = {
     name: "Board Name",
     description: "Description",
+    priority: "Priority",
+    deadline: "Deadline",
   };
 
   const [placeholder, setPlaceholder] = useState(placeholderTexts);
   const [errors, setErrors] = useState({});
-  const [form, setFormData] = useState({ name: "", description: "" });
+  const [form, setFormData] = useState({
+    name: "",
+    description: "",
+    priority: "medium",
+    deadline: "",
+  });
 
   useEffect(() => {
     if (formData) {
+      //if the form is being used as an edit form
       setFormData({ ...formData });
     }
   }, [formData]);
@@ -33,8 +44,7 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
         ...placeholder,
         [event.target.name]: placeholderTexts[event.target.name],
       });
-      if (event.target.name === "name")
-        handleValidation(event.target.name, event.target.value);
+      handleValidation(event.target.name, event.target.value);
       return;
     }
   };
@@ -74,11 +84,13 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
     const payload = {
       name: formData.get("name"),
       description: formData.get("description"),
+      priority: formData.get("priority"),
+      deadline: formData.get("deadline"),
     };
 
     if (handleValidation("name", form.name)) {
       //if name is valid. (we have no other validation to do)
-      onFormSubmit(payload);
+      console.log(payload);
     }
   };
 
@@ -112,7 +124,7 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
           onBlur={handleBlurred}
           onChange={handleChange}
           value={form.description}
-          rows={14}
+          rows={8}
           type="text"
           name="description"
           placeholder={placeholder.description}
@@ -122,23 +134,75 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
           <small className="error-message">{errors.description}</small>
         )}
       </div>
-      <div className="mt-6 flex justify-end">
-        {isEditForm && (
+      <div className="flex gap-10 items-center">
+        <div className="block w-full mb-1.5 mt-3">
+          <label htmlFor="priority" className="label text-teal-900">
+            {placeholderTexts.priority}
+          </label>
+          <div className="flex items-center">
+            <FormControl
+              variant="standard"
+              className="block w-full focus:bg-white"
+            >
+              <Select
+                className="input dropdown-input"
+                value={form.priority}
+                name="priority"
+                onChange={handleChange}
+              >
+                <MenuItem className="dropdown-option" value="low">
+                  Low
+                </MenuItem>
+                <MenuItem className="dropdown-option" value="medium">
+                  Medium
+                </MenuItem>
+                <MenuItem className="dropdown-option" value="high">
+                  High
+                </MenuItem>
+              </Select>
+            </FormControl>
+            <div className="p-1 ml-1 border rounded-3xl border-gray-300">
+              {priorityIcon(form.priority)}
+            </div>
+          </div>
+          {errors.priority && (
+            <small className="error-message">{errors.priority}</small>
+          )}
+        </div>
+        <div className="block w-full mb-1.5 mt-3">
+          <label htmlFor="deadline" className="label text-teal-900">
+            {placeholderTexts.deadline}
+          </label>
           <input
-            type={"reset"}
-            value="Cancel"
-            className="cursor-pointer button w-20 enabled:bg-yellow-500 text-black font-semibold mr-3"
+            onFocus={handleFocus}
+            onBlur={handleBlurred}
+            onChange={handleChange}
+            value={form.deadline}
+            type={"date"}
+            name="deadline"
+            placeholder={placeholder.deadline}
+            className="input focus:border-teal-600"
           />
-        )}
-        <button
+          {errors.deadline && (
+            <small className="error-message">{errors.deadline}</small>
+          )}
+        </div>
+      </div>
+      <div className="mt-6 flex justify-end">
+        <input
+          type={"reset"}
+          value="Cancel"
+          className="cursor-pointer button w-20 enabled:bg-yellow-500 text-black font-semibold mr-3"
+        />
+        <input
+          type={"submit"}
+          value="Save"
           disabled={Object.keys(errors).length !== 0}
-          className="button w-20 enabled:bg-teal-900 text-white font-semibold disabled:bg-teal-900/40"
-        >
-          {isEditForm ? "Save" : "Create"}
-        </button>
+          className="cursor-pointer button w-20 enabled:bg-teal-900 text-white font-semibold disabled:bg-teal-900/40"
+        />
       </div>
     </form>
   );
-}
+};
 
-export default BoardForm;
+export default TaskForm;

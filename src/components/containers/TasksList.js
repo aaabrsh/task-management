@@ -1,48 +1,79 @@
 import AddIcon from "@mui/icons-material/Add";
+import { Dialog } from "@mui/material";
+import { useState } from "react";
 import { priorityIcon } from "../../utils/priorityIcon";
+import TaskForm from "../ui/TaskForm";
 
 const TasksList = ({ board, tasks }) => {
+  const [open, openDialog] = useState(false);
+
   const noTasks = (
     <div className="font-bold text-center text-gray-400 text-2xl py-[100px]">
       There are no Tasks!
     </div>
   );
-  return <>{tasks.length === 0 ? noTasks : listTasks(board, tasks)}</>;
-};
 
-function listTasks(board, tasks) {
-  return (
-    <div className="px-20 h-full">
-      <div class="tasks-table-container">
-        <h1 className="text-lg py-3 text-center">{board?.name}</h1>
-        <div className="cursor-pointer flex justify-center items-center p-2 bg-transparent text-black border">
-          <span className="pr-1 font-semibold">Create Task</span> <AddIcon />
+  return <div>{tasks.length === 0 ? noTasks : listTasks()}</div>;
+
+  function listTasks() {
+    const dialog = (
+      <Dialog
+        open={open}
+        onClose={() => openDialog(false)}
+        fullWidth={true}
+        sx={{
+          "& .MuiDialog-paper": {
+            maxWidth: "900px",
+            maxHeight: "auto",
+            borderRadius: "15px",
+            border: "1px solid teal",
+          },
+        }}
+      >
+        <div className="px-10 py-8">
+          <h1 className="text-3xl text-teal-900">Add Task</h1>
+          <TaskForm closeForm={() => openDialog(false)} />
         </div>
-        <table className="tasks-table">
-          <thead className="table-head">
-            <tr>
-              <th>Task Name</th>
-              <th>ID</th>
-              <th>Priority</th>
-              <th>Status</th>
-              <th>Deadline</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task.id} class="task-row">
-                <td>{task.name}</td>
-                <td>{task.id}</td>
-                <td title={task.priority}>{priorityIcon(task.priority)}</td>
-                <td>{task.status}</td>
-                <td>{task.deadline}</td>
+      </Dialog>
+    );
+
+    return (
+      <div className="px-20 h-full">
+        <div className="tasks-table-container">
+          <h1 className="text-lg py-3 text-center">{board?.name}</h1>
+          <div
+            className="cursor-pointer flex justify-center items-center p-2 bg-transparent text-black border"
+            onClick={() => openDialog(true)}
+          >
+            <span className="pr-1 font-semibold">Create Task</span> <AddIcon />
+          </div>
+          <table className="tasks-table">
+            <thead className="table-head">
+              <tr>
+                <th>Task Name</th>
+                <th>ID</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Deadline</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tasks.map((task) => (
+                <tr key={task.id} className="task-row">
+                  <td>{task.name}</td>
+                  <td>{task.id}</td>
+                  <td title={task.priority}>{priorityIcon(task.priority)}</td>
+                  <td>{task.status}</td>
+                  <td>{task.deadline}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {dialog}
       </div>
-    </div>
-  );
-}
+    );
+  }
+};
 
 export default TasksList;
