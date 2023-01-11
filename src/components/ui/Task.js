@@ -1,25 +1,12 @@
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
-import KeyboardCapslockIcon from "@mui/icons-material/KeyboardCapslock";
-import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Divider, MenuItem, MenuList, Paper, Popover } from "@mui/material";
+import { priorityIcon } from "../../utils/priorityIcon";
 
 function Task({ task, taskClick, moveTask }) {
   const [anchorElement, setAnchorElement] = useState(null);
   const [open, setOpen] = useState(false);
-
-  const priorityIcon = (priority) => {
-    switch (priority) {
-      case "low":
-        return <HorizontalRuleIcon sx={{ color: "limegreen" }} />;
-      case "medium":
-        return <KeyboardCapslockIcon sx={{ color: "orange" }} />;
-      case "high":
-        return <KeyboardDoubleArrowUpIcon sx={{ color: "red" }} />;
-    }
-  };
 
   const handleMenuClick = (event) => {
     setAnchorElement(event.currentTarget);

@@ -59,7 +59,7 @@ const Board = () => {
           <BoardView board={board} tasks={tasks} />
         </TabPanel>
         <TabPanel value="2">
-          <TasksList />
+          <TasksList board={board} tasks={tasks} />
         </TabPanel>
       </TabContext>
     </Box>

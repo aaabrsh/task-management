@@ -130,4 +130,32 @@ h6 {
   .icon-btn {
     @apply cursor-pointer hover:text-blue-600;
   }
+
+  .tasks-table-container{
+    @apply bg-gray-300/20 p-3;
+  }
+
+  .tasks-table{
+    @apply w-full mt-2 h-[500px] overflow-y-auto block;
+  }
+
+  .table-head{
+    @apply text-left;
+  }
+
+  .table-head > tr > th{
+    @apply p-2;
+  }
+  
+  .task-row{
+    @apply border bg-white text-black mb-0.5 cursor-pointer;
+  }
+
+  .task-row > td{
+    @apply p-2 w-[1%] whitespace-nowrap;
+  }
+
+  .task-row > td:first-child{
+    @apply w-full;
+  }
 }
