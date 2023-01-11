@@ -6,6 +6,7 @@ import TaskForm from "../ui/TaskForm";
 
 const TasksList = ({ board, tasks }) => {
   const [open, openDialog] = useState(false);
+  const [formData, setFormData] = useState(undefined);
 
   const noTasks = (
     <div className="font-bold text-center text-gray-400 text-2xl py-[100px]">
@@ -32,7 +33,10 @@ const TasksList = ({ board, tasks }) => {
       >
         <div className="px-10 py-8">
           <h1 className="text-3xl text-teal-900">Add Task</h1>
-          <TaskForm closeForm={() => openDialog(false)} />
+          <TaskForm
+            formData={formData ? formData : undefined}
+            closeForm={() => openDialog(false)}
+          />
         </div>
       </Dialog>
     );
@@ -43,7 +47,10 @@ const TasksList = ({ board, tasks }) => {
           <h1 className="text-lg py-3 text-center">{board?.name}</h1>
           <div
             className="cursor-pointer flex justify-center items-center p-2 bg-transparent text-black border"
-            onClick={() => openDialog(true)}
+            onClick={() => {
+              setFormData(undefined);
+              openDialog(true);
+            }}
           >
             <span className="pr-1 font-semibold">Create Task</span> <AddIcon />
           </div>
@@ -59,7 +66,15 @@ const TasksList = ({ board, tasks }) => {
             </thead>
             <tbody>
               {tasks.map((task) => (
-                <tr key={task.id} className="task-row">
+                <tr
+                  key={task.id}
+                  className="task-row"
+                  onClick={() => {
+                    console.log(task)
+                    setFormData({ ...task });
+                    openDialog(true);
+                  }}
+                >
                   <td>{task.name}</td>
                   <td>{task.id}</td>
                   <td title={task.priority}>{priorityIcon(task.priority)}</td>

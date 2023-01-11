@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { moveTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
+import TaskForm from "../ui/TaskForm";
 
 const BoardView = ({ board, tasks }) => {
   const noHoverState = {
@@ -12,7 +13,9 @@ const BoardView = ({ board, tasks }) => {
     inProgress: false,
     completed: false,
   };
-  const [open, openDialog] = useState(false);
+  const [boardDialog, openBoardDialog] = useState(false);
+  const [taskDialog, openTaskDialog] = useState(false);
+  const [taskEdit, setTaskEdit] = useState(false);
   const [isHovered, setHovered] = useState(noHoverState);
   const [hoverStarted, setHoverStarted] = useState(false);
   const [draggedItemId, setDraggedItem] = useState(null);
@@ -42,7 +45,6 @@ const BoardView = ({ board, tasks }) => {
   };
 
   const handleDropItem = () => {
-    console.log("here")
     if (dragFromColumn.current != dragOverColumn.current) {
       dispatch(
         moveTask({
@@ -57,8 +59,56 @@ const BoardView = ({ board, tasks }) => {
   };
 
   const handleTaskClick = (task) => {
-    console.log(task);
+    openTaskDialog(true);
+    setTaskEdit({ ...task });
   };
+
+  const getBoardDialog = (
+    <Dialog
+      open={boardDialog}
+      onClose={() => openBoardDialog(false)}
+      fullWidth={true}
+      sx={{
+        "& .MuiDialog-paper": {
+          maxWidth: "900px",
+          maxHeight: "auto",
+          borderRadius: "15px",
+          border: "1px solid teal",
+        },
+      }}
+    >
+      <div className="px-10 py-8">
+        <h1 className="text-3xl text-teal-900">Edit Board</h1>
+        <BoardForm
+          onFormSubmit={(payload) => console.log(payload)}
+          closeForm={() => openBoardDialog(false)}
+          formData={board}
+          isEditForm={true}
+        />
+      </div>
+    </Dialog>
+  );
+
+  const getTaskDialog = (
+    <Dialog
+      open={taskDialog}
+      onClose={() => openTaskDialog(false)}
+      fullWidth={true}
+      sx={{
+        "& .MuiDialog-paper": {
+          maxWidth: "900px",
+          maxHeight: "auto",
+          borderRadius: "15px",
+          border: "1px solid teal",
+        },
+      }}
+    >
+      <div className="px-10 py-8">
+        <h1 className="text-3xl text-teal-900">Edit Task</h1>
+        <TaskForm formData={taskEdit} closeForm={() => openTaskDialog(false)} />
+      </div>
+    </Dialog>
+  );
 
   return (
     <>
@@ -67,7 +117,7 @@ const BoardView = ({ board, tasks }) => {
           <h1 className="text-lg flex-grow">{board?.name}</h1>
           <button
             className="button bg-yellow-500 font-semibold disabled:invisible"
-            onClick={() => openDialog(true)}
+            onClick={() => openBoardDialog(true)}
             disabled={!Object.keys(board).length}
           >
             Edit Board
@@ -86,7 +136,7 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "backlog")}
             dragEnter={() => handleDragEnterCol("backlog")}
             dragLeave={() => handleDragLeaveCol("backlog")}
-            dragEnd={handleDropItem}//incase the item was dropped out of any column
+            dragEnd={handleDropItem} //incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
@@ -101,7 +151,7 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "todo")}
             dragEnter={() => handleDragEnterCol("todo")}
             dragLeave={() => handleDragLeaveCol("todo")}
-            dragEnd={handleDropItem}//incase the item was dropped out of any column
+            dragEnd={handleDropItem} //incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
@@ -116,7 +166,7 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "in-progress")}
             dragEnter={() => handleDragEnterCol("inProgress")}
             dragLeave={() => handleDragLeaveCol("inProgress")}
-            dragEnd={handleDropItem}//incase the item was dropped out of any column
+            dragEnd={handleDropItem} //incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
@@ -131,35 +181,14 @@ const BoardView = ({ board, tasks }) => {
             dragOverCol={(e) => handleDragOverCol(e, "completed")}
             dragEnter={() => handleDragEnterCol("completed")}
             dragLeave={() => handleDragLeaveCol("completed")}
-            dragEnd={handleDropItem}//incase the item was dropped out of any column
+            dragEnd={handleDropItem} //incase the item was dropped out of any column
             dropItem={handleDropItem}
             taskClick={handleTaskClick}
           />
         </div>
       </div>
-      <Dialog
-        open={open}
-        onClose={() => openDialog(false)}
-        fullWidth={true}
-        sx={{
-          "& .MuiDialog-paper": {
-            maxWidth: "900px",
-            maxHeight: "auto",
-            borderRadius: "15px",
-            border: "1px solid teal",
-          },
-        }}
-      >
-        <div className="px-10 py-8">
-          <h1 className="text-3xl text-teal-900">Edit Board</h1>
-          <BoardForm
-            onFormSubmit={(payload) => console.log(payload)}
-            closeForm={() => openDialog(false)}
-            formData={board}
-            isEditForm={true}
-          />
-        </div>
-      </Dialog>
+      {getBoardDialog}
+      {getTaskDialog}
     </>
   );
 };

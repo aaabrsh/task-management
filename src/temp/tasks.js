@@ -2,7 +2,7 @@ export const tasks = [
   {
     id: 1,
     name: "Add form validation",
-    descripiton: "Add validations to different form fields",
+    description: "Add validations to different form fields",
     priority: "medium",
     status: "backlog",
     deadline: "23/12/2022",
@@ -12,7 +12,7 @@ export const tasks = [
   {
     id: 2,
     name: "Add Signup Page",
-    descripiton: "Add a signup page so that users can register to our service",
+    description: "Add a signup page so that users can register to our service",
     priority: "high",
     status: "backlog",
     deadline: "23/02/2022",
@@ -22,7 +22,7 @@ export const tasks = [
   {
     id: 3,
     name: "Add Login Page",
-    descripiton: "Add a login page and implement authorization",
+    description: "Add a login page and implement authorization",
     priority: "high",
     status: "backlog",
     deadline: "12/05/2022",
@@ -32,7 +32,7 @@ export const tasks = [
   {
     id: 4,
     name: "Add Profile Management",
-    descripiton: "Allow users to manage their user account",
+    description: "Allow users to manage their user account",
     priority: "low",
     status: "backlog",
     deadline: "15/10/2022",
@@ -42,7 +42,7 @@ export const tasks = [
   {
     id: 5,
     name: "Add About Page",
-    descripiton: "Add About Page with a description of who built this app",
+    description: "Add About Page with a description of who built this app",
     priority: "low",
     status: "backlog",
     deadline: "18/06/2022",
@@ -52,7 +52,7 @@ export const tasks = [
   {
     id: 6,
     name: "Add Proptypes",
-    descripiton: "Add prop types to ensure prop type integrity",
+    description: "Add prop types to ensure prop type integrity",
     priority: "medium",
     status: "backlog",
     deadline: "01/06/2022",
@@ -62,7 +62,7 @@ export const tasks = [
   {
     id: 7,
     name: "Ensure Code Quality",
-    descripiton:
+    description:
       "Make sure all code is upto standards: in use state, functional components",
     priority: "medium",
     status: "backlog",
@@ -73,7 +73,7 @@ export const tasks = [
   {
     id: 8,
     name: "Add Services",
-    descripiton: "Add Integration with the backend",
+    description: "Add Integration with the backend",
     priority: "high",
     status: "in-progress",
     deadline: "08/12/2022",
@@ -83,7 +83,7 @@ export const tasks = [
   {
     id: 9,
     name: "Add Add/Edit Task",
-    descripiton: "Add task creation and editing functionality",
+    description: "Add task creation and editing functionality",
     priority: "high",
     status: "todo",
     deadline: "17/05/2022",
@@ -93,7 +93,7 @@ export const tasks = [
   {
     id: 10,
     name: "More people in one board",
-    descripiton: "Add options on how to add more people on one board",
+    description: "Add options on how to add more people on one board",
     priority: "low",
     status: "completed",
     deadline: "03/11/2022",
@@ -103,7 +103,7 @@ export const tasks = [
   {
     id: 11,
     name: "Test Task 1 for Productivity Journal",
-    descripiton: "Test Description",
+    description: "Test Description",
     priority: "high",
     status: "backlog",
     deadline: "03/11/2022",
@@ -113,7 +113,7 @@ export const tasks = [
   {
     id: 12,
     name: "Test Task 2 for Productivity Journal",
-    descripiton: "Test Description",
+    description: "Test Description",
     priority: "medium",
     status: "todo",
     deadline: "03/11/2022",
@@ -123,7 +123,7 @@ export const tasks = [
   {
     id: 13,
     name: "Test Task Test 1 Board",
-    descripiton: "Test",
+    description: "Test",
     priority: "low",
     status: "in-progress",
     deadline: "03/11/2022",
@@ -133,7 +133,7 @@ export const tasks = [
   {
     id: 14,
     name: "Board 3 - Task 1",
-    descripiton: "Test",
+    description: "Test",
     priority: "low",
     status: "backlog",
     deadline: "03/11/2022",
@@ -143,7 +143,7 @@ export const tasks = [
   {
     id: 15,
     name: "Board 3 - Task 2",
-    descripiton: "Test",
+    description: "Test",
     priority: "high",
     status: "completed",
     deadline: "03/11/2022",
