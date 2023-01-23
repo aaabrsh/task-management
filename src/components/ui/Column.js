@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { moveTask } from "../../reducers/taskSlice";
+import { editTask, moveTask } from "../../reducers/taskSlice";
 import Task from "./Task";
 
 function Column({
@@ -31,14 +31,14 @@ function Column({
       <div className={"column-body " + (isHovered && " column-body-hover")}>
         {tasks.map((task) => (
           <div
-            key={task.id}
+            key={task._id}
             onDragStart={(e) => {
-              dragItemStart(e, task.id, column);
+              dragItemStart(e, task._id, column);
             }}
             onDragEnd={dragEnd}
             draggable="true"
             className={
-              draggedItemId != task.id
+              draggedItemId != task._id
                 ? hoverStarted
                   ? "invisible"
                   : "visible opacity-1"
@@ -49,7 +49,7 @@ function Column({
               task={task}
               taskClick={taskClick}
               moveTask={(destination) => {
-                dispatch(moveTask({ id: task.id, destination: destination }));
+                dispatch(editTask(task._id, { status: destination }));
               }}
             />
           </div>

@@ -1,7 +1,9 @@
 import { Dialog } from "@mui/material";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { moveTask } from "../../reducers/taskSlice";
+import { setActiveBoard } from "../../reducers/activeBoardSlice";
+import { editBoard } from "../../reducers/boardSlice";
+import { editTask, moveTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
 import TaskForm from "../ui/TaskForm";
@@ -26,7 +28,7 @@ const BoardView = ({ board, tasks }) => {
 
   const handleDragItemStart = (event, id, column) => {
     setHoverStarted(true);
-    dragItem.current = tasks.find((task) => task.id === id);
+    dragItem.current = tasks.find((task) => task._id === id);
     dragFromColumn.current = column;
     setDraggedItem(id);
   };
@@ -47,10 +49,7 @@ const BoardView = ({ board, tasks }) => {
   const handleDropItem = () => {
     if (dragFromColumn.current != dragOverColumn.current) {
       dispatch(
-        moveTask({
-          id: dragItem.current.id,
-          destination: dragOverColumn.current,
-        })
+        editTask(dragItem.current._id, { status: dragOverColumn.current })
       );
     }
     setDraggedItem(null);
@@ -80,7 +79,13 @@ const BoardView = ({ board, tasks }) => {
       <div className="px-10 py-8">
         <h1 className="text-3xl text-teal-900">Edit Board</h1>
         <BoardForm
-          onFormSubmit={(payload) => console.log(payload)}
+          onFormSubmit={(payload) =>
+            dispatch(editBoard(board._id, payload)).then((res) => {
+              console.log(board._id);
+              dispatch(setActiveBoard({ _id: board._id, ...payload }));
+              openBoardDialog(!res);
+            })
+          }
           closeForm={() => openBoardDialog(false)}
           formData={board}
           isEditForm={true}

@@ -9,7 +9,7 @@ import TasksList from "../../components/containers/TasksList";
 import { Link, useParams } from "react-router-dom";
 import ArrowCircleLeftOutlinedIcon from "@mui/icons-material/ArrowCircleLeftOutlined";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllTasks } from "../../reducers/taskSlice";
+import { fetchTasks } from "../../reducers/taskSlice";
 import { fetchBoard } from "../../reducers/activeBoardSlice";
 
 const Board = () => {
@@ -20,8 +20,11 @@ const Board = () => {
   const [value, setValue] = useState("1");
 
   useEffect(() => {
-    dispatch(fetchAllTasks({ id: id }));
-    dispatch(fetchBoard({ id: id }));
+    dispatch(fetchBoard(id)).then((res) => {
+      if (res) {
+        dispatch(fetchTasks(id));
+      }
+    });
   }, []);
 
   const handleTabChange = (event, newValue) => {

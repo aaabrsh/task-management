@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Select from "@mui/material/Select";
 import { FormControl, MenuItem } from "@mui/material";
 import { priorityIcon } from "../../utils/priorityIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewTask, editTask } from "../../reducers/taskSlice";
 
 const TaskForm = ({ formData, closeForm }) => {
   const [label, toggleLabel] = useState({
@@ -24,6 +26,9 @@ const TaskForm = ({ formData, closeForm }) => {
     priority: "medium",
     deadline: "",
   });
+
+  const dispatch = useDispatch();
+  const board = useSelector((state) => state.active_board);
 
   useEffect(() => {
     if (formData) {
@@ -80,17 +85,44 @@ const TaskForm = ({ formData, closeForm }) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
+    const fd = new FormData(event.target);
     const payload = {
-      name: formData.get("name"),
-      description: formData.get("description"),
-      priority: formData.get("priority"),
-      deadline: formData.get("deadline"),
+      name: fd.get("name"),
+      description: fd.get("description"),
+      priority: fd.get("priority"),
+      deadline: fd.get("deadline"),
     };
 
     if (handleValidation("name", form.name)) {
       //if name is valid. (we have no other validation to do)
-      console.log(payload);
+      const board_id = board._id;
+      if (!formData) {
+        //if the form is add form
+        dispatch(
+          addNewTask(board_id, {
+            ...payload,
+            task_id: Math.floor(Math.random() * 10000),
+          })
+        ).then((res) => {
+          if (res.success) {
+            setErrors({ ...res.message });
+          } else {
+            closeForm();
+          }
+        });
+      } else {
+        dispatch(
+          editTask(formData._id, {
+            ...payload,
+          })
+        ).then((res) => {
+          if (res.success) {
+            setErrors({ ...res.message });
+          } else {
+            closeForm();
+          }
+        });
+      }
     }
   };
 
