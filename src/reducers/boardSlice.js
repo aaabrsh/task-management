@@ -15,6 +15,13 @@ export const boardSlice = createSlice({
     addBoard: (state) => {
       return;
     },
+    updateBoard: (state, action) => {
+      let boards = [...state];
+      const board = boards.find((b) => b._id === action.payload.id);
+      const index = boards.indexOf(board);
+      boards[index] = { ...action.payload.data };
+      return boards;
+    },
   },
 });
 
@@ -27,18 +34,20 @@ export const fetchBoards = () => async (dispatch) => {
     } else {
       dispatch(setBoards([]));
     }
+    return true;
   } catch (err) {
     // throw new Error(err);
     console.log(err);
+    return false;
   }
 };
 
-export const addNewBoard = (data) => async (dispatch) => {
+export const addNewBoard = (payload) => async (dispatch) => {
   try {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ payload: { ...data } }),
+      body: JSON.stringify({ payload: { ...payload } }),
     };
     let response = await fetch(`${api_url}/boards`, requestOptions);
     response = await response.json();
@@ -55,6 +64,28 @@ export const addNewBoard = (data) => async (dispatch) => {
   }
 };
 
-export const { setBoards, addBoard } = boardSlice.actions;
+export const editBoard = (id, payload) => async (dispatch) => {
+  try {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payload: { ...payload } }),
+    };
+    let response = await fetch(`${api_url}/boards/${id}`, requestOptions);
+    response = await response.json();
+
+    if (response.success) {
+      dispatch(updateBoard({ id: id, data: response.data }));
+      return true;
+    } else {
+      throw new Error("couldn't update board");
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+export const { setBoards, addBoard, updateBoard } = boardSlice.actions;
 
 export default boardSlice.reducer;
