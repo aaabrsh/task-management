@@ -55,7 +55,7 @@ function BoardCard({ board }) {
             </button>
             <Link
               className="button bg-blue-900/80 hover:bg-blue-900 text-white"
-              to={"/boards/" + board.id}
+              to={"/boards/" + board._id}
             >
               Open Board
             </Link>

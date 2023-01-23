@@ -8,27 +8,53 @@ export const boardSlice = createSlice({
   name: "boards",
   initialState,
   reducers: {
-    addBoards: (state) => {
+    setBoards: (state, action) => {
       //redux toolkit automatically generate actions corresponding to the reducer names given here
-      return [...state];
+      return [...action.payload];
+    },
+    addBoard: (state) => {
+      return;
     },
   },
 });
 
 export const fetchBoards = () => async (dispatch) => {
   try {
-    const response = await fetch(`${api_url}/boards`);
-    response = response.json();
+    let response = await fetch(`${api_url}/boards`);
+    response = await response.json();
     if (response.success) {
-      dispatch(addBoards(response.data));
+      dispatch(setBoards(response.data));
     } else {
-      dispatch(addBoards([]));
+      dispatch(setBoards([]));
     }
   } catch (err) {
-    throw new Error(err);
+    // throw new Error(err);
+    console.log(err);
   }
 };
 
-export const { addBoards } = boardSlice.actions;
+export const addNewBoard = (data) => async (dispatch) => {
+  try {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payload: { ...data } }),
+    };
+    let response = await fetch(`${api_url}/boards`, requestOptions);
+    response = await response.json();
+
+    if (response.success) {
+      dispatch(addBoard(response.data));
+      return true;
+    } else {
+      throw new Error("couldn't add new board");
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+export const { setBoards, addBoard } = boardSlice.actions;
 
 export default boardSlice.reducer;

@@ -1,12 +1,18 @@
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BoardForm from "../../components/ui/BoardForm";
+import { addNewBoard } from "../../reducers/boardSlice";
 
 const NewBoard = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleFormSubmit = (payload) => {
-    navigate("/boards");
-    console.log(payload);
+    dispatch(addNewBoard(payload)).then((res) => {
+      if (res) {
+        navigate("/boards");
+      }
+    });
   };
 
   return (

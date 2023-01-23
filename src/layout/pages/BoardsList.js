@@ -16,10 +16,9 @@ function BoardsList() {
     <div className="py-5 px-10">
       <h1 className="p-5 bg-gray-300/20 text-lg">Your Boards</h1>
       <div className="py-5 flex flex-wrap gap-4">
-        {boards.length > 0 &&
-          boards.map((board) => <BoardCard board={board} key={board.id} />)}
-
-        {boards.length == 0 && (
+        {boards.length > 0 ? (
+          boards.map((board) => <BoardCard board={board} key={board._id} />)
+        ) : (
           <div className="block w-full text-lg text-center p-5">
             No Boards Found
           </div>
