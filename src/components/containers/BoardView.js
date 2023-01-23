@@ -28,7 +28,7 @@ const BoardView = ({ board, tasks }) => {
 
   const handleDragItemStart = (event, id, column) => {
     setHoverStarted(true);
-    dragItem.current = tasks.find((task) => task.id === id);
+    dragItem.current = tasks.find((task) => task._id === id);
     dragFromColumn.current = column;
     setDraggedItem(id);
   };
