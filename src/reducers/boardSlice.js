@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { api_url } from "../env";
-import { boards } from "../temp/boards";
 
 const initialState = [];
 

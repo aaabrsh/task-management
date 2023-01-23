@@ -21,7 +21,7 @@ const Board = () => {
 
   useEffect(() => {
     dispatch(fetchAllTasks({ id: id }));
-    dispatch(fetchBoard({ id: id }));
+    dispatch(fetchBoard(id));
   }, []);
 
   const handleTabChange = (event, newValue) => {

@@ -1,6 +1,7 @@
 import { Dialog } from "@mui/material";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { setActiveBoard } from "../../reducers/activeBoardSlice";
 import { editBoard } from "../../reducers/boardSlice";
 import { moveTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
@@ -82,9 +83,11 @@ const BoardView = ({ board, tasks }) => {
         <h1 className="text-3xl text-teal-900">Edit Board</h1>
         <BoardForm
           onFormSubmit={(payload) =>
-            dispatch(editBoard(board._id, payload)).then((res) =>
-              openBoardDialog(!res)
-            )
+            dispatch(editBoard(board._id, payload)).then((res) => {
+              console.log(board._id);
+              dispatch(setActiveBoard({ _id: board._id, ...payload }));
+              openBoardDialog(!res);
+            })
           }
           closeForm={() => openBoardDialog(false)}
           formData={board}
