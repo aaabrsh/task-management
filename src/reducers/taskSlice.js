@@ -12,16 +12,22 @@ export const tasksSlice = createSlice({
       return [...action.payload];
     },
     addTask: (state, action) => {
-      console.log(action.payload)
-      return [...state, {...action.payload}];
+      return [...state, { ...action.payload }];
     },
-    moveTask: (state, action) => {
-      const tasks = [...state];
-      const task = tasks.find((task) => task._id === action.payload.id);
+    updateTask: (state, action) => {
+      let tasks = [...state];
+      const task = tasks.find((t) => t._id === action.payload.id);
       const index = tasks.indexOf(task);
-      tasks[index] = { ...tasks[index], status: action.payload.destination };
+      tasks[index] = { ...action.payload.data };
       return tasks;
     },
+    // moveTask: (state, action) => {
+    //   const tasks = [...state];
+    //   const task = tasks.find((task) => task._id === action.payload.id);
+    //   const index = tasks.indexOf(task);
+    //   tasks[index] = { ...tasks[index], status: action.payload.destination };
+    //   return tasks;
+    // },
   },
 });
 
@@ -30,6 +36,11 @@ export const fetchTasks = (id) => async (dispatch) => {
     let response = await fetch(`${api_url}/tasks/${id}`);
     response = await response.json();
     if (response.success) {
+      response.data.forEach((res) => {
+        if (res.deadline) {
+          res.deadline = new Date(res.deadline).toISOString().split("T")[0];
+        }
+      });
       dispatch(setTasks(response.data));
       return true;
     } else {
@@ -52,10 +63,15 @@ export const addNewTask = (board_id, payload) => async (dispatch) => {
     response = await response.json();
 
     if (response.success) {
+      if (response.data.deadline) {
+        response.data.deadline = new Date(response.data.deadline)
+          .toISOString()
+          .split("T")[0];
+      }
       dispatch(addTask(response.data));
       return true;
     } else {
-      return response
+      return response;
     }
   } catch (err) {
     console.log(err);
@@ -63,6 +79,33 @@ export const addNewTask = (board_id, payload) => async (dispatch) => {
   }
 };
 
-export const { setTasks, moveTask, addTask } = tasksSlice.actions;
+export const editTask = (task_id, payload) => async (dispatch) => {
+  try {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payload: { ...payload } }),
+    };
+    let response = await fetch(`${api_url}/tasks/${task_id}`, requestOptions);
+    response = await response.json();
+
+    if (response.success) {
+      if (response.data.deadline) {
+        response.data.deadline = new Date(response.data.deadline)
+          .toISOString()
+          .split("T")[0];
+      }
+      dispatch(updateTask({ id: task_id, data: response.data }));
+      return true;
+    } else {
+      return response;
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+export const { setTasks, moveTask, addTask, updateTask } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

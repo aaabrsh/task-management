@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { moveTask } from "../../reducers/taskSlice";
+import { editTask, moveTask } from "../../reducers/taskSlice";
 import Task from "./Task";
 
 function Column({
@@ -49,7 +49,7 @@ function Column({
               task={task}
               taskClick={taskClick}
               moveTask={(destination) => {
-                dispatch(moveTask({ id: task._id, destination: destination }));
+                dispatch(editTask(task._id, { status: destination }));
               }}
             />
           </div>

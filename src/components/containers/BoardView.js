@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setActiveBoard } from "../../reducers/activeBoardSlice";
 import { editBoard } from "../../reducers/boardSlice";
-import { moveTask } from "../../reducers/taskSlice";
+import { editTask, moveTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
 import TaskForm from "../ui/TaskForm";
@@ -49,10 +49,7 @@ const BoardView = ({ board, tasks }) => {
   const handleDropItem = () => {
     if (dragFromColumn.current != dragOverColumn.current) {
       dispatch(
-        moveTask({
-          id: dragItem.current.id,
-          destination: dragOverColumn.current,
-        })
+        editTask(dragItem.current._id, { status: dragOverColumn.current })
       );
     }
     setDraggedItem(null);
