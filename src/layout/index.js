@@ -9,7 +9,7 @@ const Layout = (props) => {
       <div className="flex-grow">
         <Outlet />
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

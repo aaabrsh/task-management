@@ -20,19 +20,19 @@ function BoardCard({ board }) {
       <ul className="mb-3 flex-grow flex flex-col justify-center">
         <li className="list">
           <div className="list-label">Backlog Tasks: </div>
-          <div className="badge">12</div>
+          <div className="badge">?</div>
         </li>
         <li className="list">
           <div className="list-label">Todo Tasks: </div>
-          <div className="badge">4</div>
+          <div className="badge">?</div>
         </li>
         <li className="list">
           <div className="list-label">In Progress Tasks: </div>
-          <div className="badge">3</div>
+          <div className="badge">?</div>
         </li>
         <li className="list">
           <div className="list-label">Completed Tasks: </div>
-          <div className="badge">5</div>
+          <div className="badge">?</div>
         </li>
       </ul>
     </>

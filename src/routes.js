@@ -18,12 +18,12 @@ export const routes = (
         <Route path="boards" element={<BoardsList />} />
         <Route path="boards/new" element={<NewBoard />} />
         <Route path="boards/:id" element={<Board />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="about" element={<About />} />
+        {/* <Route path="profile" element={<Profile />} /> */}
+        {/* <Route path="about" element={<About />} /> */}
         <Route path="*" element={<PageNotFound />} />
       </Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/signup" element={<Signup />}></Route>
+      {/* <Route path="/login" element={<Login />}></Route> */}
+      {/* <Route path="/signup" element={<Signup />}></Route> */}
     </Routes>
   </BrowserRouter>
 );

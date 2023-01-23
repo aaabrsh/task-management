@@ -83,7 +83,7 @@ const TasksList = ({ board, tasks }) => {
               }}
             >
               <td>{task.name}</td>
-              <td>{task._id}</td>
+              <td>{task.task_id}</td>
               <td title={task.priority}>{priorityIcon(task.priority)}</td>
               <td>{task.status}</td>
               <td>{task.deadline}</td>
