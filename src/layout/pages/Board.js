@@ -23,10 +23,10 @@ const Board = () => {
 
   useEffect(() => {
     setBoardsSpinner(true);
+    setTasksSpinner(true);
     dispatch(fetchBoard(id)).then((res) => {
       setBoardsSpinner(false);
       if (res) {
-        setTasksSpinner(true);
         dispatch(fetchTasks(id)).then(() => setTasksSpinner(false));
       }
     });

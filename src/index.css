@@ -97,11 +97,11 @@ h6 {
   }
 
   .column-header {
-    @apply bg-gray-300/20 px-2 py-5 font-bold mb-5;
+    @apply bg-gray-300/30 px-2 py-5 font-bold mb-5;
   }
 
   .column-body {
-    @apply flex-grow bg-gray-300/20 p-2;
+    @apply flex-grow bg-gray-300/30 p-2;
   }
 
   .column-body-hover {
@@ -133,7 +133,7 @@ h6 {
   }
 
   .tasks-table-container{
-    @apply bg-gray-300/20 p-3;
+    @apply bg-gray-300/30 p-3;
   }
 
   .tasks-table{

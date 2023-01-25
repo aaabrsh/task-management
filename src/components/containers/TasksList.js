@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { CircularProgress, Dialog } from "@mui/material";
+import { Dialog } from "@mui/material";
 import { useEffect, useState } from "react";
 import { priorityIcon } from "../../utils/priorityIcon";
 import TaskForm from "../ui/TaskForm";
@@ -66,7 +66,7 @@ const TasksList = ({ board, tasks, tasksSpinner }) => {
           <div className="relative">
             {spinner && <Spinner />}
             <div
-              className="cursor-pointer flex justify-center items-center p-2 bg-transparent text-black border"
+              className="cursor-pointer flex justify-center items-center p-2 text-black border border-gray-300 hover:bg-gray-300/50"
               onClick={() => {
                 setFormData(undefined);
                 openDialog(true);

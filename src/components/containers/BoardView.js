@@ -7,6 +7,8 @@ import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
 import Spinner from "../ui/Spinner";
 import TaskForm from "../ui/TaskForm";
+import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from "@mui/icons-material/Add";
 
 const BoardView = ({
   board,
@@ -116,7 +118,7 @@ const BoardView = ({
       }}
     >
       <div className="px-10 py-8">
-        <h1 className="text-3xl text-teal-900">Edit Task</h1>
+        <h1 className="text-3xl text-teal-900">{taskEdit ? "Edit Task" : "Add Task"}</h1>
         <TaskForm formData={taskEdit} closeForm={() => openTaskDialog(false)} />
       </div>
     </Dialog>
@@ -127,21 +129,35 @@ const BoardView = ({
       <div className="px-20 h-full">
         <div className="relative">
           {boardsSpinner && <Spinner />}
-          <div className="p-5 bg-gray-300/20 flex">
-            <h1 className="text-lg flex-grow">{board?.name}</h1>
+          <div className="p-5 bg-gray-300/30 flex">
+            <h1 className="text-lg flex-grow flex items-center">
+              {board?.name}
+            </h1>
+            &nbsp;&nbsp;
             <button
-              className="button bg-yellow-500 font-semibold disabled:invisible"
+              title="edit board"
+              className="disabled:invisible"
               onClick={() => openBoardDialog(true)}
               disabled={!Object.keys(board).length}
             >
-              Edit Board
+              <EditIcon fontSize="small" className="text-cyan-500" />
             </button>
           </div>
           <div>{board?.description}</div>
         </div>
 
-        <div className="relative">
+        <div className="relative w-fit">
           {tasksSpinner && <Spinner />}
+          <div
+            className="cursor-pointer flex justify-center items-center mt-3 p-2 bg-gray-300/30 text-black hover:bg-gray-300"
+            onClick={() => {
+              setTaskEdit(undefined);
+              openTaskDialog(true);
+            }}
+          >
+            <span className="pr-1 font-semibold">Create Task</span>
+            <AddIcon />
+          </div>
           <div className="columns-container">
             <Column
               title="Backlog"
