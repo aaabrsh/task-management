@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Dialog } from "@mui/material";
+import { CircularProgress, Dialog } from "@mui/material";
 import { useState } from "react";
 import { priorityIcon } from "../../utils/priorityIcon";
 import TaskForm from "../ui/TaskForm";
@@ -7,9 +7,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch } from "react-redux";
 import { deleteTask } from "../../reducers/taskSlice";
+import Spinner from "../ui/spinner";
 
 const TasksList = ({ board, tasks }) => {
   const [open, openDialog] = useState(false);
+  const [spinner, setSpinner] = useState(false);
   const [formData, setFormData] = useState(undefined);
   const dispatch = useDispatch();
 
@@ -48,16 +50,22 @@ const TasksList = ({ board, tasks }) => {
       <div className="px-20 h-full">
         <div className="tasks-table-container">
           <h1 className="text-lg py-3 text-center">{board?.name}</h1>
-          <div
-            className="cursor-pointer flex justify-center items-center p-2 bg-transparent text-black border"
-            onClick={() => {
-              setFormData(undefined);
-              openDialog(true);
-            }}
-          >
-            <span className="pr-1 font-semibold">Create Task</span> <AddIcon />
+          <div className="relative">
+            {spinner && (
+              <Spinner />
+            )}
+            <div
+              className="cursor-pointer flex justify-center items-center p-2 bg-transparent text-black border"
+              onClick={() => {
+                setFormData(undefined);
+                openDialog(true);
+              }}
+            >
+              <span className="pr-1 font-semibold">Create Task</span>
+              <AddIcon />
+            </div>
+            {tasks.length === 0 ? noTasks : tasksTable()}
           </div>
-          {tasks.length === 0 ? noTasks : tasksTable()}
         </div>
       </div>
       {dialog}
@@ -97,7 +105,10 @@ const TasksList = ({ board, tasks }) => {
                 <button className="text-red-500 cursor-pointer" title="delete">
                   <DeleteForeverIcon
                     onClick={() => {
-                      dispatch(deleteTask(task._id));
+                      setSpinner(true);
+                      dispatch(deleteTask(task._id)).then(() =>
+                        setSpinner(false)
+                      );
                     }}
                   />
                 </button>

@@ -137,7 +137,7 @@ h6 {
   }
 
   .tasks-table{
-    @apply w-full mt-2 h-[500px] overflow-y-auto block;
+    @apply w-full mt-2 max-h-[500px] overflow-y-auto block;
   }
 
   .table-head{
@@ -158,6 +158,10 @@ h6 {
 
   .task-row > td:first-child{
     @apply w-full;
+  }
+
+  .spinner{
+    @apply absolute bg-gray-500/40 w-full h-full flex justify-center items-center text-black;
   }
 }
 
