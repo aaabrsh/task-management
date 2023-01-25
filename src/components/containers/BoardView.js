@@ -2,7 +2,6 @@ import { Dialog } from "@mui/material";
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setActiveBoard } from "../../reducers/activeBoardSlice";
-import { editBoard } from "../../reducers/boardSlice";
 import { editTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
@@ -80,15 +79,15 @@ const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
       <div className="px-10 py-8">
         <h1 className="text-3xl text-teal-900">Edit Board</h1>
         <BoardForm
-          onFormSubmit={(payload) =>
-            dispatch(editBoard(board._id, payload)).then((res) => {
-              console.log(board._id);
-              dispatch(setActiveBoard({ _id: board._id, ...payload }));
-              openBoardDialog(!res);
-            })
-          }
-          closeForm={() => openBoardDialog(false)}
+          closeForm={(payload) => {
+            if (Object.keys(payload)[0] === "_id") {
+              //if active board needs to be updated after editing
+              dispatch(setActiveBoard(payload));
+            }
+            openBoardDialog(false);
+          }}
           formData={board}
+          board_id={board._id}
           isEditForm={true}
         />
       </div>

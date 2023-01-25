@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addNewBoard, editBoard } from "../../reducers/boardSlice";
+import { SmallSpinner } from "./Spinner";
 
-function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
+function BoardForm({ formData, isEditForm, closeForm, board_id }) {
   const [label, toggleLabel] = useState({
     name: " invisible ",
     description: " invisible ",
@@ -14,6 +17,8 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
   const [placeholder, setPlaceholder] = useState(placeholderTexts);
   const [errors, setErrors] = useState({});
   const [form, setFormData] = useState({ name: "", description: "" });
+  const [spinner, setSpinner] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (formData) {
@@ -78,7 +83,23 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
 
     if (handleValidation("name", form.name)) {
       //if name is valid. (we have no other validation to do)
-      onFormSubmit(payload);
+      setSpinner(true);
+      if (!board_id) {
+        //if add form
+        dispatch(addNewBoard(payload)).then((res) => {
+          setSpinner(false);
+          if (res) {
+            closeForm(null);
+          }
+        });
+      } else {
+        dispatch(editBoard(board_id, payload)).then((res) => {
+          setSpinner(false);
+          if (res) {
+            closeForm({_id: board_id, ...payload});//the parameter is used to update active board
+          }
+        });
+      }
     }
   };
 
@@ -130,12 +151,15 @@ function BoardForm({ onFormSubmit, formData, isEditForm, closeForm }) {
             className="cursor-pointer button w-20 enabled:bg-yellow-500 text-black font-semibold mr-3"
           />
         )}
-        <button
-          disabled={Object.keys(errors).length !== 0}
-          className="button w-20 enabled:bg-teal-900 text-white font-semibold disabled:bg-teal-900/40"
-        >
-          {isEditForm ? "Save" : "Create"}
-        </button>
+        <div className="relative">
+          {spinner && <SmallSpinner />}
+          <button
+            disabled={Object.keys(errors).length !== 0 || spinner}
+            className="button w-20 enabled:bg-teal-900 text-white font-semibold disabled:bg-teal-900/40"
+          >
+            {isEditForm ? "Save" : "Create"}
+          </button>
+        </div>
       </div>
     </form>
   );

@@ -1,19 +1,8 @@
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BoardForm from "../../components/ui/BoardForm";
-import { addNewBoard } from "../../reducers/boardSlice";
 
 const NewBoard = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleFormSubmit = (payload) => {
-    dispatch(addNewBoard(payload)).then((res) => {
-      if (res) {
-        navigate("/boards");
-      }
-    });
-  };
 
   return (
     <div className="h-full flex flex-col justify-center items-center">
@@ -23,7 +12,7 @@ const NewBoard = () => {
         </div>
         <div className="flex border rounded-lg rounded-r-none border-teal-900 overflow-auto">
           <div className="px-10 py-8 bg-white w-[800px]">
-            <BoardForm onFormSubmit={handleFormSubmit} />
+            <BoardForm closeForm={() => navigate("/boards")} />
           </div>
           <div className="bg-teal-900 w-1/5"></div>
         </div>

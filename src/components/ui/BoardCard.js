@@ -1,14 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import BoardForm from "./BoardForm";
-import { useDispatch } from "react-redux";
-import { editBoard } from "../../reducers/boardSlice";
 
 function BoardCard({ board }) {
   const [description, showDescription] = useState();
   const [open, openDialog] = useState(false);
-  const dispatch = useDispatch();
 
   const descriptionView = <p>{board.description}</p>;
 
@@ -81,11 +78,7 @@ function BoardCard({ board }) {
         <div className="px-10 py-8">
           <h1 className="text-3xl text-teal-900">Edit Board</h1>
           <BoardForm
-            onFormSubmit={(payload) =>
-              dispatch(editBoard(board._id, payload)).then((res) =>
-                openDialog(!res)
-              )
-            }
+            board_id={board._id}
             closeForm={() => openDialog(false)}
             formData={board}
             isEditForm={true}

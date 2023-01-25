@@ -4,6 +4,7 @@ import { FormControl, MenuItem } from "@mui/material";
 import { priorityIcon } from "../../utils/priorityIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewTask, editTask } from "../../reducers/taskSlice";
+import { SmallSpinner } from "./Spinner";
 
 const TaskForm = ({ formData, closeForm }) => {
   const [label, toggleLabel] = useState({
@@ -27,6 +28,7 @@ const TaskForm = ({ formData, closeForm }) => {
     deadline: "",
   });
 
+  const [spinner, setSpinner] = useState(false);
   const dispatch = useDispatch();
   const board = useSelector((state) => state.active_board);
 
@@ -96,6 +98,7 @@ const TaskForm = ({ formData, closeForm }) => {
     if (handleValidation("name", form.name)) {
       //if name is valid. (we have no other validation to do)
       const board_id = board._id;
+      setSpinner(true);
       if (!formData) {
         //if the form is add form
         dispatch(
@@ -104,6 +107,7 @@ const TaskForm = ({ formData, closeForm }) => {
             task_id: Math.floor(Math.random() * 10000),
           })
         ).then((res) => {
+          setSpinner(false);
           if (res.success) {
             setErrors({ ...res.message });
           } else {
@@ -116,6 +120,7 @@ const TaskForm = ({ formData, closeForm }) => {
             ...payload,
           })
         ).then((res) => {
+          setSpinner(false);
           if (res.success) {
             setErrors({ ...res.message });
           } else {
@@ -226,12 +231,15 @@ const TaskForm = ({ formData, closeForm }) => {
           value="Cancel"
           className="cursor-pointer button w-20 enabled:bg-yellow-500 text-black font-semibold mr-3"
         />
-        <input
-          type={"submit"}
-          value="Save"
-          disabled={Object.keys(errors).length !== 0}
-          className="cursor-pointer button w-20 enabled:bg-teal-900 text-white font-semibold disabled:bg-teal-900/40"
-        />
+        <div className="relative">
+          {spinner && <SmallSpinner />}
+          <input
+            type={"submit"}
+            value="Save"
+            disabled={Object.keys(errors).length !== 0 || spinner}
+            className="cursor-pointer button w-20 enabled:bg-teal-900 text-white font-semibold disabled:bg-teal-900/40"
+          />
+        </div>
       </div>
     </form>
   );
