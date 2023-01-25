@@ -69,6 +69,7 @@ const Board = () => {
             tasks={tasks}
             tasksSpinner={tasksSpinner}
             boardsSpinner={boardsSpinner}
+            setLoading={(status) => setTasksSpinner(status)}
           />
         </TabPanel>
         <TabPanel value="2">

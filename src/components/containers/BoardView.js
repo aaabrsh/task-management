@@ -8,7 +8,13 @@ import Column from "../ui/Column";
 import Spinner from "../ui/Spinner";
 import TaskForm from "../ui/TaskForm";
 
-const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
+const BoardView = ({
+  board,
+  tasks,
+  tasksSpinner,
+  boardsSpinner,
+  setLoading,
+}) => {
   const noHoverState = {
     backlog: false,
     todo: false,
@@ -48,9 +54,10 @@ const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
 
   const handleDropItem = () => {
     if (dragFromColumn.current != dragOverColumn.current) {
+      setLoading(true);
       dispatch(
         editTask(dragItem.current._id, { status: dragOverColumn.current })
-      );
+      ).then(() => setLoading(false));
     }
     setDraggedItem(null);
     setHoverStarted(false);
@@ -150,6 +157,7 @@ const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
               dragEnd={handleDropItem} //incase the item was dropped out of any column
               dropItem={handleDropItem}
               taskClick={handleTaskClick}
+              setLoading={setLoading}
             />
             <Column
               title="To Do"
@@ -165,6 +173,7 @@ const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
               dragEnd={handleDropItem} //incase the item was dropped out of any column
               dropItem={handleDropItem}
               taskClick={handleTaskClick}
+              setLoading={setLoading}
             />
             <Column
               title="In Progress"
@@ -180,6 +189,7 @@ const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
               dragEnd={handleDropItem} //incase the item was dropped out of any column
               dropItem={handleDropItem}
               taskClick={handleTaskClick}
+              setLoading={setLoading}
             />
             <Column
               title="Completed"
@@ -195,6 +205,7 @@ const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
               dragEnd={handleDropItem} //incase the item was dropped out of any column
               dropItem={handleDropItem}
               taskClick={handleTaskClick}
+              setLoading={setLoading}
             />
           </div>
         </div>

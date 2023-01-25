@@ -4,10 +4,12 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Divider, MenuItem, MenuList, Paper, Popover } from "@mui/material";
 import { priorityIcon } from "../../utils/priorityIcon";
 import { useDispatch } from "react-redux";
-import { deleteTask } from "../../reducers/taskSlice";
+import { deleteTask, editTask } from "../../reducers/taskSlice";
+import ConfirmationDialog from "./ConfirmationDialog";
 
-function Task({ task, taskClick, moveTask }) {
+function Task({ task, taskClick, setLoading }) {
   const [anchorElement, setAnchorElement] = useState(null);
+  const [confirmDialog, openConfirmDialog] = useState(false);
   const dispatch = useDispatch();
 
   const handleMenuClick = (event) => {
@@ -15,31 +17,49 @@ function Task({ task, taskClick, moveTask }) {
   };
 
   const handleBackClick = () => {
+    setAnchorElement(false); //close pop over
+    let destination = task.status;
     switch (task.status) {
       case "todo":
-        moveTask("backlog");
+        destination = "backlog";
         break;
       case "in-progress":
-        moveTask("todo");
+        destination = "todo";
         break;
       case "completed":
-        moveTask("in-progress");
+        destination = "in-progress";
         break;
     }
+    setLoading(true);
+    dispatch(editTask(task._id, { status: destination })).then(() =>
+      setLoading(false)
+    );
   };
 
-  const handleForwardClick = (event) => {
+  const handleForwardClick = () => {
+    setAnchorElement(false); //close pop over
+    let destination = task.status;
     switch (task.status) {
       case "backlog":
-        moveTask("todo");
+        destination = "todo";
         break;
       case "todo":
-        moveTask("in-progress");
+        destination = "in-progress";
         break;
       case "in-progress":
-        moveTask("completed");
+        destination = "completed";
         break;
     }
+    setLoading(true);
+    dispatch(editTask(task._id, { status: destination })).then(() =>
+      setLoading(false)
+    );
+  };
+
+  const handleDelete = (id) => {
+    openConfirmDialog(false);
+    setLoading(true);
+    dispatch(deleteTask(task._id)).then(() => setLoading(false));
   };
 
   return (
@@ -83,13 +103,19 @@ function Task({ task, taskClick, moveTask }) {
                 <Divider />
                 <MenuItem
                   sx={{ height: 25, fontSize: 13 }}
-                  onClick={() => taskClick(task)}
+                  onClick={() => {
+                    setAnchorElement(false);
+                    taskClick(task);
+                  }}
                 >
                   Edit
                 </MenuItem>
                 <MenuItem
                   sx={{ height: 25, fontSize: 13 }}
-                  onClick={() => dispatch(deleteTask(task._id))}
+                  onClick={() => {
+                    setAnchorElement(false);
+                    openConfirmDialog(true);
+                  }}
                 >
                   Delete
                 </MenuItem>
@@ -105,6 +131,13 @@ function Task({ task, taskClick, moveTask }) {
           <span title={task.priority}>{priorityIcon(task.priority)}</span>
         </div>
       </div>
+      <ConfirmationDialog
+        type={"task"}
+        id={task._id}
+        status={confirmDialog}
+        confirmed={handleDelete}
+        closeDialog={() => openConfirmDialog(false)}
+      />
     </div>
   );
 }

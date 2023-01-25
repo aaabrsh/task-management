@@ -8,16 +8,25 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch } from "react-redux";
 import { deleteTask } from "../../reducers/taskSlice";
 import Spinner from "../ui/Spinner";
+import ConfirmationDialog from "../ui/ConfirmationDialog";
 
 const TasksList = ({ board, tasks, tasksSpinner }) => {
   const [open, openDialog] = useState(false);
+  const [confirmDialog, openConfirmDialog] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [formData, setFormData] = useState(undefined);
+  const [taskToDelete, setTaskToDelete] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setSpinner(tasksSpinner);
   }, [tasksSpinner]);
+
+  const handleDelete = (id) => {
+    openConfirmDialog(false);
+    setSpinner(true);
+    dispatch(deleteTask(id)).then(() => setSpinner(false));
+  };
 
   const noTasks = (
     <div className="font-bold text-center text-gray-400 text-2xl py-[100px]">
@@ -71,6 +80,13 @@ const TasksList = ({ board, tasks, tasksSpinner }) => {
         </div>
       </div>
       {dialog}
+      <ConfirmationDialog
+        type={"task"}
+        id={taskToDelete}
+        status={confirmDialog}
+        confirmed={handleDelete}
+        closeDialog={() => openConfirmDialog(false)}
+      />
     </div>
   );
 
@@ -107,10 +123,8 @@ const TasksList = ({ board, tasks, tasksSpinner }) => {
                 <button className="text-red-500 cursor-pointer" title="delete">
                   <DeleteForeverIcon
                     onClick={() => {
-                      setSpinner(true);
-                      dispatch(deleteTask(task._id)).then(() =>
-                        setSpinner(false)
-                      );
+                      setTaskToDelete(task._id);
+                      openConfirmDialog(true);
                     }}
                   />
                 </button>

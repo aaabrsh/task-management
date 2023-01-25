@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { editTask, moveTask } from "../../reducers/taskSlice";
+import React from "react";
 import Task from "./Task";
 
 function Column({
@@ -17,8 +15,8 @@ function Column({
   hoverStarted,
   draggedItemId,
   taskClick,
+  setLoading,
 }) {
-  const dispatch = useDispatch();
   return (
     <div
       className="column hover"
@@ -45,13 +43,7 @@ function Column({
                 : "opacity-50"
             }
           >
-            <Task
-              task={task}
-              taskClick={taskClick}
-              moveTask={(destination) => {
-                dispatch(editTask(task._id, { status: destination }));
-              }}
-            />
+            <Task task={task} taskClick={taskClick} setLoading={setLoading} />
           </div>
         ))}
       </div>
