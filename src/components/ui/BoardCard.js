@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import BoardForm from "./BoardForm";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { useDispatch } from "react-redux";
+import { deleteBoard } from "../../reducers/boardSlice";
 
-function BoardCard({ board }) {
+function BoardCard({ board, setLoading }) {
   const [description, showDescription] = useState();
   const [open, openDialog] = useState(false);
+  const [confirmDialog, openConfirmDialog] = useState(false);
+  const dispatch = useDispatch();
 
   const descriptionView = <p>{board.description}</p>;
 
@@ -35,6 +42,12 @@ function BoardCard({ board }) {
     </>
   );
 
+  const handleDelete = (id) => {
+    openConfirmDialog(false);
+    setLoading(true);
+    dispatch(deleteBoard(id)).then(() => setLoading(false));
+  };
+
   return (
     <>
       <div className="board-card">
@@ -47,12 +60,25 @@ function BoardCard({ board }) {
         </div>
         {!description && (
           <div className="flex flex-col">
-            <button
-              className="button bg-yellow-500/50 hover:bg-yellow-500 mb-2"
-              onClick={() => openDialog(true)}
-            >
-              Edit Board
-            </button>
+            <div className="flex justify-center mb-2 gap-3">
+              <div
+                className="p-1 px-3 cursor-pointer rounded bg-blue-100 hover:border hover:border-blue-400"
+                title="edit"
+                onClick={() => openDialog(true)}
+              >
+                <EditIcon fontSize="small" className="text-blue-400" />
+              </div>
+              <div
+                className="p-1 px-3 cursor-pointer rounded bg-red-100 hover:border hover:border-red-500"
+                title="delete"
+              >
+                <DeleteForeverIcon
+                  fontSize="small"
+                  className="text-red-500"
+                  onClick={() => openConfirmDialog(true)}
+                />
+              </div>
+            </div>
             <Link
               className="button bg-blue-900/80 hover:bg-blue-900 text-white"
               to={"/boards/" + board._id}
@@ -85,6 +111,13 @@ function BoardCard({ board }) {
           />
         </div>
       </Dialog>
+      <ConfirmationDialog
+        type={"board"}
+        id={board._id}
+        status={confirmDialog}
+        confirmed={handleDelete}
+        closeDialog={() => openConfirmDialog(false)}
+      />
     </>
   );
 }

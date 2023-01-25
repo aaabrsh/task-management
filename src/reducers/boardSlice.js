@@ -21,6 +21,9 @@ export const boardSlice = createSlice({
       boards[index] = { ...action.payload.data };
       return boards;
     },
+    removeTask: (state, action) => {
+      return [...state.filter((board) => board._id != action.payload.id)];
+    },
   },
 });
 
@@ -85,6 +88,26 @@ export const editBoard = (id, payload) => async (dispatch) => {
   }
 };
 
-export const { setBoards, addBoard, updateBoard } = boardSlice.actions;
+export const deleteBoard = (board_id) => async (dispatch) => {
+  try {
+    let response = await fetch(`${api_url}/boards/${board_id}`, {
+      method: "DELETE",
+    });
+    response = await response.json();
+
+    if (response.success) {
+      dispatch(removeTask({ id: response.data._id }));
+      return true;
+    } else {
+      throw new Error("couldn't delete board");
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};
+
+export const { setBoards, addBoard, updateBoard, removeTask } =
+  boardSlice.actions;
 
 export default boardSlice.reducer;
