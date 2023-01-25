@@ -77,7 +77,6 @@ const TasksList = ({ board, tasks }) => {
               key={task._id}
               className="task-row"
               onClick={() => {
-                console.log(task);
                 setFormData({ ...task });
                 openDialog(true);
               }}

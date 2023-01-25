@@ -3,10 +3,12 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import { Divider, MenuItem, MenuList, Paper, Popover } from "@mui/material";
 import { priorityIcon } from "../../utils/priorityIcon";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../../reducers/taskSlice";
 
 function Task({ task, taskClick, moveTask }) {
   const [anchorElement, setAnchorElement] = useState(null);
-  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const handleMenuClick = (event) => {
     setAnchorElement(event.currentTarget);
@@ -79,8 +81,18 @@ function Task({ task, taskClick, moveTask }) {
                   </span>
                 </div>
                 <Divider />
-                <MenuItem sx={{ height: 25, fontSize: 13 }}>Edit</MenuItem>
-                <MenuItem sx={{ height: 25, fontSize: 13 }}>Delete</MenuItem>
+                <MenuItem
+                  sx={{ height: 25, fontSize: 13 }}
+                  onClick={() => taskClick(task)}
+                >
+                  Edit
+                </MenuItem>
+                <MenuItem
+                  sx={{ height: 25, fontSize: 13 }}
+                  onClick={() => dispatch(deleteTask(task._id))}
+                >
+                  Delete
+                </MenuItem>
               </MenuList>
             </Paper>
           </div>

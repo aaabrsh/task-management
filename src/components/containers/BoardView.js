@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setActiveBoard } from "../../reducers/activeBoardSlice";
 import { editBoard } from "../../reducers/boardSlice";
-import { editTask, moveTask } from "../../reducers/taskSlice";
+import { editTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
 import TaskForm from "../ui/TaskForm";
