@@ -1,6 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { CircularProgress, Dialog } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { priorityIcon } from "../../utils/priorityIcon";
 import TaskForm from "../ui/TaskForm";
 import EditIcon from "@mui/icons-material/Edit";
@@ -9,11 +9,15 @@ import { useDispatch } from "react-redux";
 import { deleteTask } from "../../reducers/taskSlice";
 import Spinner from "../ui/spinner";
 
-const TasksList = ({ board, tasks }) => {
+const TasksList = ({ board, tasks, tasksSpinner }) => {
   const [open, openDialog] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [formData, setFormData] = useState(undefined);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setSpinner(tasksSpinner);
+  }, [tasksSpinner]);
 
   const noTasks = (
     <div className="font-bold text-center text-gray-400 text-2xl py-[100px]">
@@ -51,9 +55,7 @@ const TasksList = ({ board, tasks }) => {
         <div className="tasks-table-container">
           <h1 className="text-lg py-3 text-center">{board?.name}</h1>
           <div className="relative">
-            {spinner && (
-              <Spinner />
-            )}
+            {spinner && <Spinner />}
             <div
               className="cursor-pointer flex justify-center items-center p-2 bg-transparent text-black border"
               onClick={() => {

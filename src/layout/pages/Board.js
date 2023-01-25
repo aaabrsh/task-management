@@ -18,11 +18,16 @@ const Board = () => {
   const board = useSelector((state) => state.active_board);
   const tasks = useSelector((state) => state.tasks);
   const [value, setValue] = useState("1");
+  const [tasksSpinner, setTasksSpinner] = useState(false);
+  const [boardsSpinner, setBoardsSpinner] = useState(false);
 
   useEffect(() => {
+    setBoardsSpinner(true);
     dispatch(fetchBoard(id)).then((res) => {
+      setBoardsSpinner(false);
       if (res) {
-        dispatch(fetchTasks(id));
+        setTasksSpinner(true);
+        dispatch(fetchTasks(id)).then(() => setTasksSpinner(false));
       }
     });
   }, []);
@@ -59,10 +64,15 @@ const Board = () => {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <BoardView board={board} tasks={tasks} />
+          <BoardView
+            board={board}
+            tasks={tasks}
+            tasksSpinner={tasksSpinner}
+            boardsSpinner={boardsSpinner}
+          />
         </TabPanel>
         <TabPanel value="2">
-          <TasksList board={board} tasks={tasks} />
+          <TasksList board={board} tasks={tasks} tasksSpinner={tasksSpinner} />
         </TabPanel>
       </TabContext>
     </Box>

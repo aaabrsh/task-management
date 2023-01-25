@@ -6,9 +6,10 @@ import { editBoard } from "../../reducers/boardSlice";
 import { editTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
+import Spinner from "../ui/spinner";
 import TaskForm from "../ui/TaskForm";
 
-const BoardView = ({ board, tasks }) => {
+const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {
   const noHoverState = {
     backlog: false,
     todo: false,
@@ -118,78 +119,85 @@ const BoardView = ({ board, tasks }) => {
   return (
     <>
       <div className="px-20 h-full">
-        <div className="p-5 bg-gray-300/20 flex">
-          <h1 className="text-lg flex-grow">{board?.name}</h1>
-          <button
-            className="button bg-yellow-500 font-semibold disabled:invisible"
-            onClick={() => openBoardDialog(true)}
-            disabled={!Object.keys(board).length}
-          >
-            Edit Board
-          </button>
+        <div className="relative">
+          {boardsSpinner && <Spinner />}
+          <div className="p-5 bg-gray-300/20 flex">
+            <h1 className="text-lg flex-grow">{board?.name}</h1>
+            <button
+              className="button bg-yellow-500 font-semibold disabled:invisible"
+              onClick={() => openBoardDialog(true)}
+              disabled={!Object.keys(board).length}
+            >
+              Edit Board
+            </button>
+          </div>
+          <div>{board?.description}</div>
         </div>
-        <div>{board?.description}</div>
-        <div className="columns-container">
-          <Column
-            title="Backlog"
-            column="backlog"
-            tasks={tasks.filter((task) => task.status == "backlog")}
-            isHovered={isHovered.backlog}
-            hoverStarted={hoverStarted}
-            draggedItemId={draggedItemId}
-            dragItemStart={handleDragItemStart}
-            dragOverCol={(e) => handleDragOverCol(e, "backlog")}
-            dragEnter={() => handleDragEnterCol("backlog")}
-            dragLeave={() => handleDragLeaveCol("backlog")}
-            dragEnd={handleDropItem} //incase the item was dropped out of any column
-            dropItem={handleDropItem}
-            taskClick={handleTaskClick}
-          />
-          <Column
-            title="To Do"
-            column="todo"
-            tasks={tasks.filter((task) => task.status == "todo")}
-            isHovered={isHovered.todo}
-            draggedItemId={draggedItemId}
-            hoverStarted={hoverStarted}
-            dragItemStart={handleDragItemStart}
-            dragOverCol={(e) => handleDragOverCol(e, "todo")}
-            dragEnter={() => handleDragEnterCol("todo")}
-            dragLeave={() => handleDragLeaveCol("todo")}
-            dragEnd={handleDropItem} //incase the item was dropped out of any column
-            dropItem={handleDropItem}
-            taskClick={handleTaskClick}
-          />
-          <Column
-            title="In Progress"
-            column="in-progress"
-            tasks={tasks.filter((task) => task.status == "in-progress")}
-            isHovered={isHovered.inProgress}
-            hoverStarted={hoverStarted}
-            draggedItemId={draggedItemId}
-            dragItemStart={handleDragItemStart}
-            dragOverCol={(e) => handleDragOverCol(e, "in-progress")}
-            dragEnter={() => handleDragEnterCol("inProgress")}
-            dragLeave={() => handleDragLeaveCol("inProgress")}
-            dragEnd={handleDropItem} //incase the item was dropped out of any column
-            dropItem={handleDropItem}
-            taskClick={handleTaskClick}
-          />
-          <Column
-            title="Completed"
-            column="completed"
-            tasks={tasks.filter((task) => task.status == "completed")}
-            isHovered={isHovered.completed}
-            hoverStarted={hoverStarted}
-            draggedItemId={draggedItemId}
-            dragItemStart={handleDragItemStart}
-            dragOverCol={(e) => handleDragOverCol(e, "completed")}
-            dragEnter={() => handleDragEnterCol("completed")}
-            dragLeave={() => handleDragLeaveCol("completed")}
-            dragEnd={handleDropItem} //incase the item was dropped out of any column
-            dropItem={handleDropItem}
-            taskClick={handleTaskClick}
-          />
+
+        <div className="relative">
+          {tasksSpinner && <Spinner />}
+          <div className="columns-container">
+            <Column
+              title="Backlog"
+              column="backlog"
+              tasks={tasks.filter((task) => task.status == "backlog")}
+              isHovered={isHovered.backlog}
+              hoverStarted={hoverStarted}
+              draggedItemId={draggedItemId}
+              dragItemStart={handleDragItemStart}
+              dragOverCol={(e) => handleDragOverCol(e, "backlog")}
+              dragEnter={() => handleDragEnterCol("backlog")}
+              dragLeave={() => handleDragLeaveCol("backlog")}
+              dragEnd={handleDropItem} //incase the item was dropped out of any column
+              dropItem={handleDropItem}
+              taskClick={handleTaskClick}
+            />
+            <Column
+              title="To Do"
+              column="todo"
+              tasks={tasks.filter((task) => task.status == "todo")}
+              isHovered={isHovered.todo}
+              draggedItemId={draggedItemId}
+              hoverStarted={hoverStarted}
+              dragItemStart={handleDragItemStart}
+              dragOverCol={(e) => handleDragOverCol(e, "todo")}
+              dragEnter={() => handleDragEnterCol("todo")}
+              dragLeave={() => handleDragLeaveCol("todo")}
+              dragEnd={handleDropItem} //incase the item was dropped out of any column
+              dropItem={handleDropItem}
+              taskClick={handleTaskClick}
+            />
+            <Column
+              title="In Progress"
+              column="in-progress"
+              tasks={tasks.filter((task) => task.status == "in-progress")}
+              isHovered={isHovered.inProgress}
+              hoverStarted={hoverStarted}
+              draggedItemId={draggedItemId}
+              dragItemStart={handleDragItemStart}
+              dragOverCol={(e) => handleDragOverCol(e, "in-progress")}
+              dragEnter={() => handleDragEnterCol("inProgress")}
+              dragLeave={() => handleDragLeaveCol("inProgress")}
+              dragEnd={handleDropItem} //incase the item was dropped out of any column
+              dropItem={handleDropItem}
+              taskClick={handleTaskClick}
+            />
+            <Column
+              title="Completed"
+              column="completed"
+              tasks={tasks.filter((task) => task.status == "completed")}
+              isHovered={isHovered.completed}
+              hoverStarted={hoverStarted}
+              draggedItemId={draggedItemId}
+              dragItemStart={handleDragItemStart}
+              dragOverCol={(e) => handleDragOverCol(e, "completed")}
+              dragEnter={() => handleDragEnterCol("completed")}
+              dragLeave={() => handleDragLeaveCol("completed")}
+              dragEnd={handleDropItem} //incase the item was dropped out of any column
+              dropItem={handleDropItem}
+              taskClick={handleTaskClick}
+            />
+          </div>
         </div>
       </div>
       {getBoardDialog}
