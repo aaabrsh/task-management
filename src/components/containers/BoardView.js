@@ -6,7 +6,7 @@ import { editBoard } from "../../reducers/boardSlice";
 import { editTask } from "../../reducers/taskSlice";
 import BoardForm from "../ui/BoardForm";
 import Column from "../ui/Column";
-import Spinner from "../ui/spinner";
+import Spinner from "../ui/Spinner";
 import TaskForm from "../ui/TaskForm";
 
 const BoardView = ({ board, tasks, tasksSpinner, boardsSpinner }) => {

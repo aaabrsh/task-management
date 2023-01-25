@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useDispatch } from "react-redux";
 import { deleteTask } from "../../reducers/taskSlice";
-import Spinner from "../ui/spinner";
+import Spinner from "../ui/Spinner";
 
 const TasksList = ({ board, tasks, tasksSpinner }) => {
   const [open, openDialog] = useState(false);

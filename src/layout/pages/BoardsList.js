@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BoardCard from "../../components/ui/BoardCard";
-import Spinner from "../../components/ui/spinner";
+import Spinner from "../../components/ui/Spinner";
 import { fetchBoards } from "../../reducers/boardSlice";
 
 function BoardsList() {
