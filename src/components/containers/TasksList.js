@@ -3,10 +3,15 @@ import { Dialog } from "@mui/material";
 import { useState } from "react";
 import { priorityIcon } from "../../utils/priorityIcon";
 import TaskForm from "../ui/TaskForm";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../../reducers/taskSlice";
 
 const TasksList = ({ board, tasks }) => {
   const [open, openDialog] = useState(false);
   const [formData, setFormData] = useState(undefined);
+  const dispatch = useDispatch();
 
   const noTasks = (
     <div className="font-bold text-center text-gray-400 text-2xl py-[100px]">
@@ -69,23 +74,34 @@ const TasksList = ({ board, tasks }) => {
             <th>Priority</th>
             <th>Status</th>
             <th>Deadline</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {tasks.map((task) => (
-            <tr
-              key={task._id}
-              className="task-row"
-              onClick={() => {
-                setFormData({ ...task });
-                openDialog(true);
-              }}
-            >
+            <tr key={task._id} className="task-row">
               <td>{task.name}</td>
               <td>{task.task_id}</td>
               <td title={task.priority}>{priorityIcon(task.priority)}</td>
               <td>{task.status}</td>
               <td>{task.deadline}</td>
+              <td>
+                <button className="text-blue-400 cursor-pointer" title="edit">
+                  <EditIcon
+                    onClick={() => {
+                      setFormData({ ...task });
+                      openDialog(true);
+                    }}
+                  />
+                </button>
+                <button className="text-red-500 cursor-pointer" title="delete">
+                  <DeleteForeverIcon
+                    onClick={() => {
+                      dispatch(deleteTask(task._id));
+                    }}
+                  />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

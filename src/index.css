@@ -149,7 +149,7 @@ h6 {
   }
   
   .task-row{
-    @apply border bg-white text-black mb-0.5 cursor-pointer;
+    @apply border bg-white text-black mb-0.5;
   }
 
   .task-row > td{
