@@ -1,4 +1,4 @@
-const Profile = (props) => {
+const Profile = () => {
   return <div>Profile</div>;
 };
 

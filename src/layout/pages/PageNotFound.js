@@ -1,4 +1,4 @@
-const PageNotFound = (props) => {
+const PageNotFound = () => {
   return (
     <div class="flex flex-col justify-center items-center bg-gray-700 h-full">
       <div className="text-rose-900 text-9xl">404</div>

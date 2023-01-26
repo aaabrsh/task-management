@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Signup = (props) => {
+const Signup = () => {
   const navigate = useNavigate();
 
   const [label, toggleLabel] = useState({

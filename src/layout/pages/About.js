@@ -1,4 +1,4 @@
-const About = (props) => {
+const About = () => {
   return <div>About</div>;
 };
 

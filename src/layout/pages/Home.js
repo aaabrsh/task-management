@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Card from "../../components/ui/Card";
 
-const Home = (props) => {
+const Home = () => {
   return (
     <div className="p-6 text-center bg-gray-100 my-14 mx-20 border-4 border-gray-300 rounded-2xl">
       <h1 className="text-3xl">Welcome,</h1>

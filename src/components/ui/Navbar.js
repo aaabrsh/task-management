@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Navbar = (props) => {
+const Navbar = () => {
   return (
     <nav className="navContainer">
       <ul className="inline-block flex-grow">
